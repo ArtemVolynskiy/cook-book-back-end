@@ -7,6 +7,18 @@
     <groupId>SmartRestaurant</groupId>
     <artifactId>smartrest</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
     <packaging>war</packaging>
 
     <properties>
@@ -19,12 +31,15 @@
         <!--    Tests  -->
         <junit.version>4.12</junit.version>
 
+        <!-- Jackson-->
+        <jackson-json.version>2.8.8</jackson-json.version>
+
         <!-- Hibernate -->
-        <hibernate.version>5.2.2.Final</hibernate.version>
+        <hibernate.version>5.2.9.Final</hibernate.version>
         <hibernate-validator.version>5.2.4.Final</hibernate-validator.version>
         <tomcat.version>8.0.33</tomcat.version>
-        <spring.version>4.3.2.RELEASE</spring.version>
-        <spring-data-jpa.version>1.10.4.RELEASE</spring-data-jpa.version>
+        <spring.version>4.3.7.RELEASE</spring.version>
+        <spring-data-jpa.version>1.11.1.RELEASE</spring-data-jpa.version>
     </properties>
     <dependencies>
         <dependency>
@@ -83,6 +98,23 @@
             </exclusions>
         </dependency>
 
+        <!--JSON-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson-json.version}.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-hibernate5</artifactId>
+            <version>${jackson-json.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>${jackson-json.version}</version>
+        </dependency>
+
 
         <dependency>
             <groupId>javax.transaction</groupId>
@@ -94,6 +126,18 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
             <version>${hibernate-validator.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jdbc</artifactId>
+            <version>${tomcat.version}</version>
         </dependency>
         <!--Test-->
         <dependency>
