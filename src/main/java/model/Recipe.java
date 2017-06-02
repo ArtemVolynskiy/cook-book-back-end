@@ -7,10 +7,17 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "recipe", uniqueConstraints = {@UniqueConstraint(columnNames = {"id", "name", "recipe"})})
+@NamedQueries({
+        @NamedQuery(name = Recipe.DELETE, query = "DELETE FROM Recipe r WHERE r.name=:name"),
+        @NamedQuery(name = Recipe.GET_ALL, query = "SELECT r FROM Recipe r ORDER BY r.name"),
+})
 public class Recipe extends NamedEntity {
+    public static final String DELETE = "Recipe.delete";
+    public static final String GET_ALL = "Recipe.getAll";
 
 
     @Column (name = "calories")
@@ -25,9 +32,10 @@ public class Recipe extends NamedEntity {
     @Column (name = "image")
     private byte [] image;
 
-    @CollectionTable(name = "ingredients", joinColumns = @JoinColumn(name = "recipe_id", nullable = false))
-    @OneToMany(fetch = FetchType.LAZY)
-    private List <Ingredient> ingredients;
+    @JoinTable(name = "recipe_ingredient", joinColumns = { @JoinColumn(name = "recipe_name") },
+            inverseJoinColumns = { @JoinColumn(name = "ingredient_name") })
+    @ManyToMany (fetch = FetchType.EAGER)
+    private Set<Ingredient> ingredients;
 
     @Column (name = "recipe")
     @NotNull
@@ -35,7 +43,7 @@ public class Recipe extends NamedEntity {
 
     public Recipe () {}
 
-    public Recipe (int id, String name, int calories, int cookingTimeMinutes, byte [] image, List<Ingredient> ingredients,
+    public Recipe (int id, String name, int calories, int cookingTimeMinutes, byte [] image, Set<Ingredient> ingredients,
                    String recipe) {
         super(id, name);
         this.calories = calories;
@@ -78,11 +86,11 @@ public class Recipe extends NamedEntity {
         this.image = image;
     }
 
-    public List<Ingredient> getIngredients() {
+    public Set<Ingredient> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(List<Ingredient> ingredients) {
+    public void setIngredients(Set<Ingredient> ingredients) {
         this.ingredients = ingredients;
     }
 }

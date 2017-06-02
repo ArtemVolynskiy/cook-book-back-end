@@ -1,13 +1,17 @@
 package model;
 
 
+
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import java.util.Date;
-import java.util.Set;
 
 @NamedQueries({
             @NamedQuery(name = User.DELETE, query = "DELETE FROM User u WHERE u.id=:id"),
@@ -37,30 +41,29 @@ public class User extends NamedEntity {
     @Column (name = "enabled", nullable = false)
     private boolean enabled;
 
+    @Column (name = "isadmin", nullable = false)
+    private boolean isAdmin;
+
     @Column (name = "registered", columnDefinition = "timestamp default now")
     private Date registered = new Date();
 
     @Column (name = "calories", nullable = false)
     private Integer calories;
 
-    @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "user_role")
-    @ElementCollection(fetch = FetchType.LAZY)
-    private Set<Role> roles;
 
     public User (){}
 
     public User(User user) {
-        this(user.getId(), user.getName(), user.getEmail(), user.getPassword(), user.isEnabled(), user.roles);
+        this(user.getId(), user.getName(), user.getEmail(), user.getPassword(),user.getCalories(), user.isEnabled(), user.isAdmin);
     }
 
-    public User(int id, String name, String email, String password, boolean enabled, Set<Role> roles ){
+    public User(int id, String name, String email, String password, int calories, boolean enabled, boolean isAdmin ){
         super(id, name);
         this.email = email;
         this.password = password;
+        this.calories = calories;
         this.enabled = enabled;
-        this.roles = roles;
+        this.isAdmin = isAdmin;
 
     }
 
@@ -102,6 +105,15 @@ public class User extends NamedEntity {
         this.calories = calories;
     }
 
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
+    }
+
+
     public String toString() {
         return "Name: " + super.getName() +
                 "Age: " + getEmail() +
@@ -109,11 +121,5 @@ public class User extends NamedEntity {
                 "Daily Calories: " + getCalories();
     }
 
-    public Set<Role> getRoles() {
-        return roles;
-    }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
 }

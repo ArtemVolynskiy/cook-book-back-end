@@ -2,13 +2,18 @@ package model;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table (name = "ingredients")
+@NamedQueries({
+        @NamedQuery(name = Ingredient.DELETE, query = "DELETE FROM Ingredient i WHERE i.name=:name"),
+        @NamedQuery(name = Ingredient.GET_ALL, query = "SELECT i FROM Ingredient i ORDER BY i.name")
+}
+)
 public class Ingredient extends NamedEntity {
+    public static final String DELETE = "Ingredient.delete";
+    public static final String GET_ALL = "Ingredient.all";
 
     @Column (name = "price")
     @NotEmpty

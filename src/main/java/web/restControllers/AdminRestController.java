@@ -29,10 +29,12 @@ public class AdminRestController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     String getName(String name) {
+        User user1 = new User(1,"Maxim", "max@gmail.com", "123123", 2000, true, true);
+        userService.save(user1);
         return "Hello World!";
     }
 
-    @PostMapping(value = "/create", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = "/create" ,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<User>  createUser(@RequestBody User user) {
         User createdUser = userService.save(user);
 
@@ -68,7 +70,7 @@ public class AdminRestController {
         }
     }
 
-    @GetMapping(value= "/getAll", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value= "/get", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     List<User> getAllUsers() {
         return userService.getAll();
     }
