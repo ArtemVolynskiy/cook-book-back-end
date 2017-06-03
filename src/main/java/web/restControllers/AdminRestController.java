@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping(AdminRestController.REST_URL)
 public class AdminRestController {
-    static final String REST_URL = "/rest";
+    static final String REST_URL = "/admin";
 
     private final
     UserService userService;
@@ -31,7 +31,7 @@ public class AdminRestController {
     String getName(String name) {
         User user1 = new User(1,"Maxim", "max@gmail.com", "123123", 2000, true, true);
         userService.save(user1);
-        return "Hello World!";
+        return "Welcome to administrative panel!";
     }
 
     @PostMapping(value = "/create" ,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

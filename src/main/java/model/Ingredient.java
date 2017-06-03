@@ -3,20 +3,26 @@ package model;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
+@Access(AccessType.FIELD)
 @Table (name = "ingredients")
 @NamedQueries({
         @NamedQuery(name = Ingredient.DELETE, query = "DELETE FROM Ingredient i WHERE i.name=:name"),
-        @NamedQuery(name = Ingredient.GET_ALL, query = "SELECT i FROM Ingredient i ORDER BY i.name")
+        @NamedQuery(name = Ingredient.GET_ALL, query = "SELECT i FROM Ingredient i ORDER BY i.name"),
+        @NamedQuery(name = Ingredient.FIND, query = "SELECT i FROM Ingredient i WHERE i.name=:name")
 }
 )
 public class Ingredient extends NamedEntity {
     public static final String DELETE = "Ingredient.delete";
+    public static final String FIND = "Ingredient.find";
     public static final String GET_ALL = "Ingredient.all";
 
     @Column (name = "price")
-    @NotEmpty
+    @NotNull
     private int price;
 
     @Column (name = "available")
@@ -24,6 +30,9 @@ public class Ingredient extends NamedEntity {
 
     @Column (name = "quantity")
     private String quantity;
+
+    @ManyToMany (mappedBy = "ingredients")
+    private Set<Recipe> recipes = new HashSet<>();
 
     public Ingredient(){}
 
@@ -60,5 +69,13 @@ public class Ingredient extends NamedEntity {
 
     public void setQuantity(String quantity) {
         this.quantity = quantity;
+    }
+
+    public String toString() {
+        return "id: " + this.getId() + "\n"
+                + "name: " + this.getName() + "\n"
+                + "price: " + this.getPrice() + "\n"
+                + "available: " + this.isAvailable() + "\n"
+                + "quantity: " + this.getQuantity();
     }
 }

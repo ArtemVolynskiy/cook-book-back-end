@@ -1,16 +1,15 @@
 package model;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @MappedSuperclass
 @Access(AccessType.FIELD)
 public class NamedEntity extends BaseEntity {
 
-    @NotNull
+    @NotEmpty
     @Column(name = "name", nullable = false)
     private String name;
 

@@ -1,19 +1,17 @@
 package model;
 
 
-import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "recipe", uniqueConstraints = {@UniqueConstraint(columnNames = {"id", "name", "recipe"})})
 @NamedQueries({
         @NamedQuery(name = Recipe.DELETE, query = "DELETE FROM Recipe r WHERE r.name=:name"),
-        @NamedQuery(name = Recipe.GET_ALL, query = "SELECT r FROM Recipe r ORDER BY r.name"),
+        @NamedQuery(name = Recipe.GET_ALL, query = "SELECT r FROM Recipe r LEFT JOIN FETCH r.ingredients ORDER BY r.name"),
 })
 public class Recipe extends NamedEntity {
     public static final String DELETE = "Recipe.delete";
@@ -21,24 +19,26 @@ public class Recipe extends NamedEntity {
 
 
     @Column (name = "calories")
-    @NotEmpty
-    @Length(min = 3)
+    @NotNull
     private int calories;
 
     @Column (name = "cooking_time")
-    @NotEmpty
+    @NotNull
     private int cookingTimeMinutes;
 
     @Column (name = "image")
     private byte [] image;
 
-    @JoinTable(name = "recipe_ingredient", joinColumns = { @JoinColumn(name = "recipe_name") },
-            inverseJoinColumns = { @JoinColumn(name = "ingredient_name") })
-    @ManyToMany (fetch = FetchType.EAGER)
+    @ManyToMany (fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(
+            name = "recipe_ingredients",
+            joinColumns = @JoinColumn(name = "recipe_id"),
+            inverseJoinColumns = @JoinColumn(name = "ingredient_id")
+    )
     private Set<Ingredient> ingredients;
 
     @Column (name = "recipe")
-    @NotNull
+    @NotEmpty
     private String recipe;
 
     public Recipe () {}
