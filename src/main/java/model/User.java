@@ -116,9 +116,9 @@ public class User extends NamedEntity {
 
     public String toString() {
         return "Name: " + super.getName() +
-                "Age: " + getEmail() +
-                "Registration Date: " + getRegistered() +
-                "Daily Calories: " + getCalories();
+                ", age: " + getEmail() +
+                ", registration Date: " + getRegistered() +
+                ", daily Calories: " + getCalories();
     }
 
 

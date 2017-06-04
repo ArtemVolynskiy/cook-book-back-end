@@ -27,13 +27,11 @@ public class IngredientRestController {
 
     @GetMapping (value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
     String greetings () {
-//        Ingredient ingredient1 = new Ingredient(5, "Kartoshka", 100, true);
-//        ingredientService.save(ingredient1);
-        Ingredient ingredient = null;
+        Ingredient ingredient;
         try {
             ingredient = ingredientService.get("Kartoshka");
         } catch (Exception e) {
-            ingredient = new Ingredient(5, "Kartoshka", 100, true);
+            ingredient = new Ingredient(15, "Makaroshki", 200, true);
         }
 
 

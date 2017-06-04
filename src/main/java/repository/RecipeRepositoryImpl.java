@@ -29,7 +29,7 @@ public class RecipeRepositoryImpl implements RecipeRepository {
 
     @Override
     public Recipe get(String name) {
-        return em.find(Recipe.class, name);
+        return em.createNamedQuery(Recipe.FIND, Recipe.class).setParameter("name", name).getSingleResult();
     }
 
     @Override

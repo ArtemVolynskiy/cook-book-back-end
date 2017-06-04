@@ -28,11 +28,9 @@ public class Ingredient extends NamedEntity {
     @Column (name = "available")
     private boolean available;
 
-    @Column (name = "quantity")
-    private String quantity;
 
-    @ManyToMany (mappedBy = "ingredients")
-    private Set<Recipe> recipes = new HashSet<>();
+    @Column (name = "quantity")
+    private int quantity;
 
     public Ingredient(){}
 
@@ -45,6 +43,7 @@ public class Ingredient extends NamedEntity {
     public Ingredient(Ingredient ingredient) {
         this(ingredient.getId(), ingredient.getName(), ingredient.getPrice(), ingredient.available);
     }
+
 
     public int getPrice() {
         return price;
@@ -63,11 +62,11 @@ public class Ingredient extends NamedEntity {
         this.available = available;
     }
 
-    public String getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(String quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
