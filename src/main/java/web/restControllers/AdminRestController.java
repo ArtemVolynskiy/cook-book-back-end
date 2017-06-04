@@ -29,8 +29,10 @@ public class AdminRestController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     String getName(String name) {
-        User user1 = new User(1,"Maxim", "max@gmail.com", "123123", 2000, true, true);
-        userService.save(user1);
+//        User user1 = new User(1,"Maxim", "max@gmail.com", "123123", 2000, true, true);
+//        userService.save(user1);
+
+
         return "Welcome to administrative panel!";
     }
 
