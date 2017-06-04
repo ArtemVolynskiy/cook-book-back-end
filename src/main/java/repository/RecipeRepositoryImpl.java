@@ -33,6 +33,7 @@ public class RecipeRepositoryImpl implements RecipeRepository {
     }
 
     @Override
+    @Transactional
     public boolean delete(String name) {
         return em.createNamedQuery(Recipe.DELETE).setParameter("name", name).executeUpdate() != 0;
     }

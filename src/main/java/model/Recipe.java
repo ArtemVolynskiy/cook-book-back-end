@@ -14,6 +14,7 @@ import java.util.Set;
         @NamedQuery(name = Recipe.GET_ALL, query = "SELECT DISTINCT r FROM Recipe r LEFT JOIN FETCH r.ingredients ORDER BY r.name"),
         @NamedQuery(name = Recipe.FIND, query = "select r FROM  Recipe r WHERE r.name=:name")
 })
+@Access(AccessType.FIELD)
 public class Recipe extends NamedEntity {
     public static final String DELETE = "Recipe.delete";
     public static final String GET_ALL = "Recipe.getAll";
@@ -31,7 +32,7 @@ public class Recipe extends NamedEntity {
     @Column (name = "image")
     private byte [] image;
 
-    @ManyToMany (fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToMany (fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(
             name = "recipe_ingredients",
             joinColumns = @JoinColumn(name = "recipe_id"),

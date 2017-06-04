@@ -6,7 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @MappedSuperclass
-@Access(AccessType.FIELD)
+@Access(AccessType.PROPERTY)
 public class NamedEntity extends BaseEntity {
 
     @NotEmpty
@@ -25,7 +25,7 @@ public class NamedEntity extends BaseEntity {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name.toLowerCase();
     }
 
     public String toString() {

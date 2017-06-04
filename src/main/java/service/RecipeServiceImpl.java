@@ -1,6 +1,7 @@
 package service;
 
 
+import javassist.NotFoundException;
 import model.Recipe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,13 +26,13 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public void delete(String name) {
-        recipeRepository.delete(name);
+    public void delete(String name) throws NotFoundException {
+        recipeRepository.delete(name.toLowerCase());
     }
 
     @Override
     public Recipe get(String name) {
-        return recipeRepository.get(name);
+        return recipeRepository.get(name.toLowerCase());
     }
 
     @Override

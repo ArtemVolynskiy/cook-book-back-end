@@ -1,5 +1,6 @@
 package web.restControllers;
 
+import com.fasterxml.jackson.databind.node.TextNode;
 import javassist.NotFoundException;
 import model.Ingredient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,10 @@ import java.util.List;
 @RestController
 @RequestMapping (value = IngredientRestController.INGREDIENTS_URL)
 public class IngredientRestController {
-     static final String INGREDIENTS_URL = "/ingredient";
+    static final String INGREDIENTS_URL = "/admin/ingredient";
 
-     private final
-     IngredientService ingredientService;
+    private final
+    IngredientService ingredientService;
 
     @Autowired
     public IngredientRestController(IngredientService ingredientService) {
@@ -27,25 +28,15 @@ public class IngredientRestController {
 
     @GetMapping (value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
     String greetings () {
-        Ingredient ingredient;
-        try {
-            ingredient = ingredientService.get("Kartoshka");
-        } catch (Exception e) {
-            ingredient = new Ingredient(15, "Makaroshki", 200, true);
-        }
-
-
-//        return "Welcome to ingredients controller!";
-        return ingredient.toString();
+        return "Welcome to ingredients controller!";
     }
 
     @GetMapping (value = "/find", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<Ingredient> findIngredient (@RequestParam ("name") String name) {
         try {
-            Ingredient foundIngredient = ingredientService.get(name);
-
+            Ingredient foundIngredient = ingredientService.get(name.toLowerCase());
             return new ResponseEntity<Ingredient>(foundIngredient, HttpStatus.FOUND);
-        } catch (NotFoundException e) {
+        } catch (NoResultException | NotFoundException e) {
             return new ResponseEntity<Ingredient>(HttpStatus.NOT_FOUND);
         }
     }
@@ -56,22 +47,24 @@ public class IngredientRestController {
     }
 
     @PostMapping (value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE)
-    void updateIngredient(@RequestBody Ingredient ingredient) {
+    HttpStatus updateIngredient(@RequestBody Ingredient ingredient) {
         ingredientService.save(ingredient);
+        return HttpStatus.OK;
     }
 
     @DeleteMapping (value = "/delete")
-    void deleteIngredient (@RequestParam ("name") String name) {
+    HttpStatus deleteIngredient (@RequestBody TextNode name) {
         try {
-            ingredientService.delete(name);
+            ingredientService.delete(name.textValue().toLowerCase());
+            return HttpStatus.OK;
         } catch (NotFoundException e) {
-            e.printStackTrace();
+            return HttpStatus.NOT_FOUND;
         }
     }
 
     @GetMapping (value = "/all", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    List<Ingredient> findAll () {
-        return ingredientService.getAll();
+    ResponseEntity<List<Ingredient>> findAll () {
+        return new ResponseEntity<>(ingredientService.getAll(), HttpStatus.FOUND);
     }
 
 }

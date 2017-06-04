@@ -41,8 +41,8 @@ public class User extends NamedEntity {
     @Column (name = "enabled", nullable = false)
     private boolean enabled;
 
-    @Column (name = "isadmin", nullable = false)
-    private boolean isAdmin;
+    @Column (name = "role", nullable = false)
+    private String role;
 
     @Column (name = "registered", columnDefinition = "timestamp default now")
     private Date registered = new Date();
@@ -54,16 +54,16 @@ public class User extends NamedEntity {
     public User (){}
 
     public User(User user) {
-        this(user.getId(), user.getName(), user.getEmail(), user.getPassword(),user.getCalories(), user.isEnabled(), user.isAdmin);
+        this(user.getId(), user.getName(), user.getEmail(), user.getPassword(),user.getCalories(), user.isEnabled(), user.role);
     }
 
-    public User(int id, String name, String email, String password, int calories, boolean enabled, boolean isAdmin ){
+    public User(int id, String name, String email, String password, int calories, boolean enabled, String role ){
         super(id, name);
         this.email = email;
         this.password = password;
         this.calories = calories;
         this.enabled = enabled;
-        this.isAdmin = isAdmin;
+        this.role = role;
 
     }
 
@@ -105,13 +105,14 @@ public class User extends NamedEntity {
         this.calories = calories;
     }
 
-    public boolean isAdmin() {
-        return isAdmin;
+    private String getRole() {
+        return role;
     }
 
-    public void setAdmin(boolean admin) {
-        isAdmin = admin;
+    public void setCalories(String role) {
+        this.role = role;
     }
+
 
 
     public String toString() {

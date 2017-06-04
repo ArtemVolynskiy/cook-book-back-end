@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Access(AccessType.FIELD)
+@Access(AccessType.PROPERTY)
 @Table (name = "ingredients")
 @NamedQueries({
         @NamedQuery(name = Ingredient.DELETE, query = "DELETE FROM Ingredient i WHERE i.name=:name"),
