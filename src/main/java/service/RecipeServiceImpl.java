@@ -31,8 +31,13 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public Recipe get(String name) {
-        return recipeRepository.get(name.toLowerCase());
+    public Recipe get(int id) {
+        return recipeRepository.get(id);
+    }
+
+    @Override
+    public Recipe findByName(String name) {
+        return recipeRepository.findByName(name);
     }
 
     @Override

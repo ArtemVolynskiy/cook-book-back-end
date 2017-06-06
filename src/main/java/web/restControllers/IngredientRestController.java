@@ -34,14 +34,14 @@ public class IngredientRestController {
     @GetMapping (value = "/find", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<Ingredient> findIngredient (@RequestParam ("name") String name) {
         try {
-            Ingredient foundIngredient = ingredientService.get(name.toLowerCase());
+            Ingredient foundIngredient = ingredientService.findByName(name.toLowerCase());
             return new ResponseEntity<Ingredient>(foundIngredient, HttpStatus.FOUND);
-        } catch (NoResultException | NotFoundException e) {
+        } catch (NoResultException e) {
             return new ResponseEntity<Ingredient>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @PostMapping (value = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping (value = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<Ingredient> createIngredient (@RequestBody Ingredient ingredient ) {
         return new ResponseEntity<Ingredient>(ingredientService.save(ingredient), HttpStatus.CREATED);
     }

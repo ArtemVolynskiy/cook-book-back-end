@@ -1,6 +1,7 @@
 package web.restControllers;
 
 
+import com.fasterxml.jackson.databind.node.TextNode;
 import javassist.NotFoundException;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,26 +29,12 @@ public class AdminRestController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    String getName(String name) {
-//        User user1 = new User(1,"Maxim", "max@gmail.com", "123123", 2000, true, true);
-//        userService.save(user1);
-
-
+    String greetings() {
         return "Welcome to administrative panel!";
     }
 
-    @PostMapping(value = "/create" ,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<User>  createUser(@RequestBody User user) {
-        User createdUser = userService.save(user);
 
-        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(REST_URL + "{id}")
-                .buildAndExpand(createdUser.getId()).toUri();
-
-        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
-    }
-
-    @GetMapping(value = "/find", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/findmail", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> getByEmail(@RequestParam("email") String email) {
         try {
             User user = userService.getByEmail(email);
@@ -57,22 +44,32 @@ public class AdminRestController {
         }
     }
 
-    @PutMapping(value = "/update}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = "/findid", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<User> getById(@RequestParam("id") int id) {
+        try {
+            User user = userService.get(id);
+            return new ResponseEntity<>(user, HttpStatus.FOUND);
+        } catch (NotFoundException e) {
+            return null;
+        }
+    }
+
+    @PostMapping(value = "/update}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     void updateUser(@RequestBody User user) {
         userService.update(user);
     }
 
-    @DeleteMapping(value = "/delete/{id}")
-    void deleteUser(@PathVariable int id) {
+    @DeleteMapping (value = "/delete")
+    HttpStatus deleteIngredient (@RequestBody TextNode textNode) {
         try {
-            System.out.println("Hi");
-            userService.delete(id);
-        } catch (NotFoundException e) {
-            e.printStackTrace();
+            userService.delete(Integer.parseInt(textNode.textValue()));
+            return HttpStatus.OK;
+        } catch (NotFoundException| IllegalArgumentException e) {
+            return HttpStatus.NOT_FOUND;
         }
     }
 
-    @GetMapping(value= "/get", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value= "/all", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     List<User> getAllUsers() {
         return userService.getAll();
     }

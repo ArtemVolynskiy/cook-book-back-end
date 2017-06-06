@@ -30,8 +30,13 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    public Ingredient get(String name) throws NotFoundException {
-        return ingredientRepository.get(name.toLowerCase());
+    public Ingredient get(int id) throws NotFoundException {
+        return ingredientRepository.get(id);
+    }
+
+    @Override
+    public Ingredient findByName(String name) {
+        return ingredientRepository.findByName(name);
     }
 
     @Override

@@ -12,7 +12,9 @@ public interface IngredientService {
 
     void delete (String name) throws NotFoundException;
 
-    Ingredient get (String name) throws NotFoundException;
+    Ingredient get (int id) throws NotFoundException;
+
+    Ingredient findByName (String name);
 
     List<Ingredient> getAll();
 

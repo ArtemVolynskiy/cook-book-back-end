@@ -9,7 +9,9 @@ public interface RecipeRepository {
     Recipe save(Recipe recipe);
 
     // Null if not found
-    Recipe get (String name);
+    Recipe get (int id);
+
+    Recipe findByName (String name);
 
     // False if not found
     boolean delete (String name);

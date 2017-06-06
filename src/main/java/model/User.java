@@ -12,20 +12,25 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import java.util.Date;
+import java.util.Set;
 
 @NamedQueries({
-            @NamedQuery(name = User.DELETE, query = "DELETE FROM User u WHERE u.id=:id"),
-            @NamedQuery(name = User.BY_EMAIL, query = "SELECT u from User u WHERE u.email=?1"),
-            @NamedQuery(name = User.ALL_SORTED, query = "SELECT u from User u ORDER BY u.id, u.email")
-    })
+        @NamedQuery(name = User.DELETE, query = "DELETE FROM User u WHERE u.id=:id"),
+        @NamedQuery(name = User.BY_EMAIL, query = "SELECT DISTINCT u from User u LEFT JOIN FETCH u.userRecipes WHERE u.email=?1"),
+        @NamedQuery(name = User.ALL_SORTED, query = "SELECT u from User u ORDER BY u.id, u.email"),
+        @NamedQuery(name = User.FIND_BY_NAME, query = "SELECT DISTINCT u FROM  User u LEFT JOIN FETCH u.userRecipes WHERE u.name=:name"),
+        @NamedQuery(name = User.FIND_BY_ID, query = "SELECT DISTINCT u FROM User u LEFT JOIN FETCH u.userRecipes WHERE u.id=:id")
+})
 
-    @Entity
-    @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "email", name = "users_unique_email_idx")})
+@Entity
+@Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "email", name = "users_unique_email_idx")})
 public class User extends NamedEntity {
 
     public static final String DELETE = "User.delete";
     public static final String ALL_SORTED = "User.getAllSorted";
     public static final String BY_EMAIL = "User.getByEmail";
+    public static final String FIND_BY_NAME = "User.findName";
+    public static final String FIND_BY_ID = "User.findId";
 
 
     @Column (name = "email", nullable = false)
@@ -49,6 +54,14 @@ public class User extends NamedEntity {
 
     @Column (name = "calories", nullable = false)
     private Integer calories;
+
+    @ManyToMany (fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "users_recipe",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "recipe_id")
+    )
+    private Set<Recipe>userRecipes;
 
 
     public User (){}
@@ -75,7 +88,6 @@ public class User extends NamedEntity {
     public void setPassword(String password) {
         this.password = password;
     }
-
 
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
@@ -113,7 +125,17 @@ public class User extends NamedEntity {
         this.role = role;
     }
 
+    public Set<Recipe> getUserRecipes() {
+        return userRecipes;
+    }
 
+    public void setUserRecipes(Set<Recipe> userRecipes) {
+        this.userRecipes = userRecipes;
+    }
+
+    public void addRecipe (Recipe recipe) {
+        this.userRecipes.add(recipe);
+    }
 
     public String toString() {
         return "Name: " + super.getName() +
@@ -121,6 +143,5 @@ public class User extends NamedEntity {
                 ", registration Date: " + getRegistered() +
                 ", daily Calories: " + getCalories();
     }
-
 
 }

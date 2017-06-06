@@ -31,6 +31,7 @@
         <spring-security.version>4.2.2.RELEASE</spring-security.version>
         <spring-webmvc.version>4.3.8.RELEASE</spring-webmvc.version>
 
+
         <!-- Hibernate -->
         <hibernate.version>5.2.9.Final</hibernate.version>
         <hibernate-validator.version>5.2.4.Final</hibernate-validator.version>

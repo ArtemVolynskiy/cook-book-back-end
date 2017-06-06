@@ -9,7 +9,9 @@ public interface IngredientRepository {
     Ingredient save(Ingredient ingredient);
 
     // Null if not found
-    Ingredient get (String name);
+    Ingredient get (int id);
+
+    Ingredient findByName (String name);
 
     // False if not found
     boolean delete (String name);

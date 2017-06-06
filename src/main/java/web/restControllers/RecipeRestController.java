@@ -44,20 +44,20 @@ public class RecipeRestController {
     @GetMapping (value = "/find", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<Recipe> findRecipe(@RequestParam ("name") String name) {
         try {
-            return new ResponseEntity<Recipe>(recipeService.get(name.toLowerCase()), HttpStatus.FOUND);
-        } catch (NoResultException | NotFoundException e) {
+            return new ResponseEntity<Recipe>(recipeService.findByName(name.toLowerCase()), HttpStatus.FOUND);
+        } catch (NoResultException e) {
             return new ResponseEntity<Recipe>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @PostMapping (value = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping (value = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<Recipe> createRecipe(@RequestBody Recipe recipe) {
 
            Set<Ingredient> existingIngredientsPlusNew = new HashSet<>();
            for (Ingredient ingredient: recipe.getIngredients()) {
                try {
-                   existingIngredientsPlusNew.add(ingredientService.get(ingredient.getName().toLowerCase()));
-               } catch (NotFoundException | NoResultException e) {
+                   existingIngredientsPlusNew.add(ingredientService.findByName(ingredient.getName().toLowerCase()));
+               } catch (NoResultException e) {
                    existingIngredientsPlusNew.add(ingredient);
                }
            }

@@ -28,8 +28,13 @@ public class RecipeRepositoryImpl implements RecipeRepository {
     }
 
     @Override
-    public Recipe get(String name) {
-        return em.createNamedQuery(Recipe.FIND, Recipe.class).setParameter("name", name).getSingleResult();
+    public Recipe get(int id) {
+        return em.find(Recipe.class, id);
+    }
+
+    @Override
+    public Recipe findByName(String name) {
+        return em.createNamedQuery(Recipe.FIND_BY_NAME, Recipe.class).setParameter("name", name).getSingleResult();
     }
 
     @Override

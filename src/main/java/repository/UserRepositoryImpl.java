@@ -24,13 +24,23 @@ public class UserRepositoryImpl implements UserRepository {
             em.persist(user);
             return user;
         } else {
-           return em.merge(user);
+            return em.merge(user);
         }
     }
 
     @Override
     public User get(int id) {
         return em.find(User.class, id);
+    }
+
+    @Override
+    public User findByName(String name) {
+        return em.createNamedQuery(User.FIND_BY_NAME, User.class).setParameter("name", name).getSingleResult();
+    }
+
+    @Override
+    public User findById(int id) {
+        return em.createNamedQuery(User.FIND_BY_ID, User.class).setParameter("id", id).getSingleResult();
     }
 
     @Override

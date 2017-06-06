@@ -1,7 +1,6 @@
 package repository;
 
 
-import javassist.NotFoundException;
 import model.User;
 
 import java.util.List;
@@ -12,6 +11,11 @@ public interface UserRepository {
 
     // Null if not found
     User get (int id);
+
+    User findByName (String name);
+
+
+    User findById (int id);
 
     // False if not found
     boolean delete (int id);

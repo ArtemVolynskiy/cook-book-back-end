@@ -12,7 +12,9 @@ public interface RecipeService {
 
     void delete (String name) throws NotFoundException;
 
-    Recipe get (String name) throws NotFoundException;
+    Recipe get (int id) throws NotFoundException;
+
+    Recipe findByName (String name);
 
     List<Recipe> getAll ();
 

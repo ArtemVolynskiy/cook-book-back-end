@@ -13,35 +13,45 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository repository;
+    private final UserRepository userRepository;
 
     @Autowired
     public UserServiceImpl(UserRepository repository) {
-        this.repository = repository;
+        this.userRepository = repository;
     }
 
     public User save(User user) {
-        return repository.save(user);
+        return userRepository.save(user);
     }
 
     public void delete(int id) throws NotFoundException {
-        repository.delete(id);
+        userRepository.delete(id);
     }
 
     public User get(int id) throws NotFoundException {
-        return repository.get(id);
+        return userRepository.get(id);
+    }
+
+    @Override
+    public User findByName(String name) {
+        return userRepository.findByName(name);
+    }
+
+    @Override
+    public User findById(int id) {
+        return userRepository.findById(id);
     }
 
     public User getByEmail(String email) throws NotFoundException {
-        return repository.getByEmail(email);
+        return userRepository.getByEmail(email);
     }
 
     public List<User> getAll() {
-        return repository.getAll();
+        return userRepository.getAll();
     }
 
     public void update(User user) {
         Assert.notNull(user, "User must not be null");
-        repository.save(user);
+        userRepository.save(user);
     }
 }

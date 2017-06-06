@@ -29,7 +29,12 @@ public class IngredientRepositoryImpl implements IngredientRepository {
     }
 
     @Override
-    public Ingredient get(String name) {
+    public Ingredient get(int id) {
+      return em.find(Ingredient.class, id);
+    }
+
+    @Override
+    public Ingredient findByName(String name) {
         return em.createNamedQuery(Ingredient.FIND, Ingredient.class).setParameter("name", name).getSingleResult();
     }
 

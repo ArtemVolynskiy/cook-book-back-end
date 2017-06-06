@@ -11,15 +11,14 @@ import java.util.Set;
 @Table(name = "recipe", uniqueConstraints = {@UniqueConstraint(columnNames = {"id", "name", "recipe"})})
 @NamedQueries({
         @NamedQuery(name = Recipe.DELETE, query = "DELETE FROM Recipe r WHERE r.name=:name"),
-        @NamedQuery(name = Recipe.GET_ALL, query = "SELECT DISTINCT r FROM Recipe r LEFT JOIN FETCH r.ingredients ORDER BY r.name"),
-        @NamedQuery(name = Recipe.FIND, query = "select r FROM  Recipe r WHERE r.name=:name")
+        @NamedQuery(name = Recipe.GET_ALL, query = "SELECT r FROM Recipe r ORDER BY r.name"),
+        @NamedQuery(name = Recipe.FIND_BY_NAME, query = "SELECT DISTINCT r FROM Recipe r LEFT JOIN FETCH r.ingredients WHERE r.name=:name")
 })
 @Access(AccessType.FIELD)
 public class Recipe extends NamedEntity {
     public static final String DELETE = "Recipe.delete";
     public static final String GET_ALL = "Recipe.getAll";
-    public static final String FIND = "Recipe.find";
-
+    public static final String FIND_BY_NAME = "Recipe.find";
 
     @Column (name = "calories")
     @NotNull
@@ -32,7 +31,7 @@ public class Recipe extends NamedEntity {
     @Column (name = "image")
     private byte [] image;
 
-    @ManyToMany (fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToMany (fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(
             name = "recipe_ingredients",
             joinColumns = @JoinColumn(name = "recipe_id"),
