@@ -70,7 +70,13 @@ public class UserRestController {
     }
 
     @PutMapping (value = "/countcalories")
-    public HttpStatus countDailyCalories(@RequestBody TextNode userInfo){
-        return HttpStatus.OK;
+    public HttpStatus countDailyCalories(@RequestParam int userId, @RequestBody TextNode userInfo){
+        try {
+            userService.countDailyCalories(userId, userInfo);
+            return HttpStatus.OK;
+        } catch (IllegalArgumentException | NotFoundException e) {
+            return HttpStatus.BAD_REQUEST;
+        }
+
     }
 }

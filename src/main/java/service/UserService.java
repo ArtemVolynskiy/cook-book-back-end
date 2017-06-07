@@ -1,9 +1,11 @@
 package service;
 
 
+import com.fasterxml.jackson.databind.node.TextNode;
 import javassist.NotFoundException;
 import model.Recipe;
 import model.User;
+import utils.ActivityLevel;
 
 import java.util.List;
 
@@ -26,4 +28,6 @@ public interface UserService {
     void update (User user);
 
     User saveRecipe(int id, Recipe recipe);
+
+    void countDailyCalories (int id, TextNode userInfo) throws NotFoundException;
 }
