@@ -2,6 +2,7 @@ package service;
 
 
 import javassist.NotFoundException;
+import model.Recipe;
 import model.User;
 
 import java.util.List;
@@ -23,4 +24,6 @@ public interface UserService {
     List<User> getAll();
 
     void update (User user);
+
+    User saveRecipe(int id, Recipe recipe);
 }

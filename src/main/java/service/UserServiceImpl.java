@@ -2,6 +2,7 @@ package service;
 
 
 import javassist.NotFoundException;
+import model.Recipe;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,5 +54,12 @@ public class UserServiceImpl implements UserService {
     public void update(User user) {
         Assert.notNull(user, "User must not be null");
         userRepository.save(user);
+    }
+
+    @Override
+    public User saveRecipe(int id, Recipe recipe) {
+        User user = findById(id);
+        user.getUserRecipes().add(recipe);
+        return save(user);
     }
 }
