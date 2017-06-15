@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
+@CrossOrigin()
 @RequestMapping (RecipeRestController.RECIPE_URL)
 public class RecipeRestController {
     static final String RECIPE_URL = "/admin/recipe";
@@ -53,17 +54,7 @@ public class RecipeRestController {
     @PutMapping (value = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<Recipe> createRecipe(@RequestBody Recipe recipe) {
 
-           Set<Ingredient> existingIngredientsPlusNew = new HashSet<>();
-           for (Ingredient ingredient: recipe.getIngredients()) {
-               try {
-                   existingIngredientsPlusNew.add(ingredientService.findByName(ingredient.getName().toLowerCase()));
-               } catch (NoResultException e) {
-                   existingIngredientsPlusNew.add(ingredient);
-               }
-           }
-           recipe.setIngredients(existingIngredientsPlusNew);
-        Recipe createdRecipe = recipeService.save(recipe);
-        return new ResponseEntity<>(createdRecipe, HttpStatus.CREATED);
+        return new ResponseEntity<>(recipeService.save(recipe), HttpStatus.CREATED);
     }
 
     @PostMapping (value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -75,7 +66,7 @@ public class RecipeRestController {
     @DeleteMapping (value = "/delete")
     HttpStatus deleteRecipe (@RequestBody TextNode name) {
         try {
-            recipeService.delete(name.textValue().toLowerCase());
+            recipeService.delete(Integer.parseInt(name.textValue()));
             return HttpStatus.OK;
         } catch (NotFoundException e) {
             return HttpStatus.NOT_FOUND;
@@ -84,6 +75,6 @@ public class RecipeRestController {
 
     @GetMapping (value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<List<Recipe>> getAllRecipes () {
-        return  new ResponseEntity<>(recipeService.getAll(), HttpStatus.FOUND);
+        return  new ResponseEntity<>(recipeService.getAll(), HttpStatus.OK);
     }
 }

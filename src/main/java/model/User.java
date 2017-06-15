@@ -38,6 +38,13 @@ public class User extends NamedEntity {
     @NotEmpty
     private String email;
 
+    @Column (name = "secondname")
+    private String secondName;
+
+    @Column (name = "nickname")
+    @NotEmpty
+    private String nickname;
+
     @Column (name = "password", nullable = false)
     @NotEmpty
     @Length(min = 6, max = 50)
@@ -50,6 +57,7 @@ public class User extends NamedEntity {
     private String role;
 
     @Column (name = "registered", columnDefinition = "timestamp default now")
+    @Temporal(TemporalType.DATE)
     private Date registered = new Date();
 
     @Column (name = "calories", nullable = false)
@@ -67,12 +75,14 @@ public class User extends NamedEntity {
     public User (){}
 
     public User(User user) {
-        this(user.getId(), user.getName(), user.getEmail(), user.getPassword(),user.getCalories(), user.isEnabled(), user.role);
+        this(user.getId(), user.getName(),user.secondName, user.nickname, user.getEmail(), user.getPassword(),user.getCalories(), user.isEnabled(), user.role);
     }
 
-    public User(int id, String name, String email, String password, int calories, boolean enabled, String role ){
+    public User(int id, String name, String secondName, String nickname, String email, String password, int calories, boolean enabled, String role ){
         super(id, name);
         this.email = email;
+        this.secondName = secondName;
+        this.nickname = nickname;
         this.password = password;
         this.calories = calories;
         this.enabled = enabled;
@@ -144,4 +154,19 @@ public class User extends NamedEntity {
                 ", daily Calories: " + getCalories();
     }
 
+    public String getSecondName() {
+        return secondName;
+    }
+
+    public void setSecondName(String secondName) {
+        this.secondName = secondName;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 }

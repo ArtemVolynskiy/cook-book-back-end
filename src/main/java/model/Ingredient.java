@@ -32,6 +32,7 @@ public class Ingredient extends NamedEntity {
     @Column (name = "quantity")
     private int quantity;
 
+
     public Ingredient(){}
 
     public Ingredient(int id, String name, int price, boolean available) {

@@ -15,6 +15,7 @@ public class RecipeServiceImpl implements RecipeService {
     private final
     RecipeRepository recipeRepository;
 
+
     @Autowired
     public RecipeServiceImpl(RecipeRepository recipeRepository) {
         this.recipeRepository = recipeRepository;
@@ -22,12 +23,13 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public Recipe save(Recipe recipe) {
+//
         return recipeRepository.save(recipe);
     }
 
     @Override
-    public void delete(String name) throws NotFoundException {
-        recipeRepository.delete(name.toLowerCase());
+    public void delete(int id) throws NotFoundException {
+        recipeRepository.delete(id);
     }
 
     @Override

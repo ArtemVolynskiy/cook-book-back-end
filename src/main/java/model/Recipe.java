@@ -1,6 +1,7 @@
 package model;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
@@ -10,13 +11,11 @@ import java.util.Set;
 @Entity
 @Table(name = "recipe", uniqueConstraints = {@UniqueConstraint(columnNames = {"id", "name", "recipe"})})
 @NamedQueries({
-        @NamedQuery(name = Recipe.DELETE, query = "DELETE FROM Recipe r WHERE r.name=:name"),
         @NamedQuery(name = Recipe.GET_ALL, query = "SELECT r FROM Recipe r ORDER BY r.name"),
         @NamedQuery(name = Recipe.FIND_BY_NAME, query = "SELECT DISTINCT r FROM Recipe r LEFT JOIN FETCH r.ingredients WHERE r.name=:name")
 })
 @Access(AccessType.FIELD)
 public class Recipe extends NamedEntity {
-    public static final String DELETE = "Recipe.delete";
     public static final String GET_ALL = "Recipe.getAll";
     public static final String FIND_BY_NAME = "Recipe.find";
 
@@ -31,13 +30,10 @@ public class Recipe extends NamedEntity {
     @Column (name = "image")
     private byte [] image;
 
-    @ManyToMany (fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinTable(
-            name = "recipe_ingredients",
-            joinColumns = @JoinColumn(name = "recipe_id"),
-            inverseJoinColumns = @JoinColumn(name = "ingredient_id")
-    )
-    private Set<Ingredient> ingredients;
+
+    @OneToMany (fetch = FetchType.LAZY, mappedBy = "recipe", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
+    @JsonManagedReference
+    private Set<RecipeIngredients> ingredients;
 
     @Column (name = "recipe")
     @NotEmpty
@@ -45,7 +41,7 @@ public class Recipe extends NamedEntity {
 
     public Recipe () {}
 
-    public Recipe (int id, String name, int calories, int cookingTimeMinutes, byte [] image, Set<Ingredient> ingredients,
+    public Recipe (int id, String name, int calories, int cookingTimeMinutes, byte [] image, Set<RecipeIngredients> ingredients,
                    String recipe) {
         super(id, name);
         this.calories = calories;
@@ -89,12 +85,12 @@ public class Recipe extends NamedEntity {
         this.image = image;
     }
 
-    public Set<Ingredient> getIngredients() {
+    public Set<RecipeIngredients> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(Set<Ingredient> ingredients) {
-        this.ingredients = ingredients;
+    public void setIngredients(Set<RecipeIngredients> recipeIngredients) {
+        this.ingredients = recipeIngredients;
     }
 
     public String toString() {
