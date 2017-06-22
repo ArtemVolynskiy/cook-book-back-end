@@ -1,21 +1,16 @@
-package web.restControllers;
+package web.restControllers.json;
 
-import com.fasterxml.jackson.databind.node.TextNode;
 import javassist.NotFoundException;
-import model.Ingredient;
 import model.Recipe;
+import model.RecipeIngredients;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import service.IngredientService;
 import service.RecipeService;
 
 import javax.persistence.NoResultException;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -28,13 +23,10 @@ public class RecipeRestController {
     private final
     RecipeService recipeService;
 
-    private final
-    IngredientService ingredientService;
 
     @Autowired
-    public RecipeRestController(RecipeService recipeService, IngredientService ingredientService) {
+    public RecipeRestController(RecipeService recipeService) {
         this.recipeService = recipeService;
-        this.ingredientService = ingredientService;
     }
 
     @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -43,11 +35,12 @@ public class RecipeRestController {
     }
 
     @GetMapping (value = "/find", produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<Recipe> findRecipe(@RequestParam ("name") String name) {
+    ResponseEntity<Set<RecipeIngredients>> findRecipe(@RequestParam ("name") String name) {
         try {
-            return new ResponseEntity<Recipe>(recipeService.findByName(name.toLowerCase()), HttpStatus.FOUND);
+            Recipe recipe = recipeService.findByName(name.toLowerCase());
+            return new ResponseEntity<>(recipe.getIngredients(), HttpStatus.OK);
         } catch (NoResultException e) {
-            return new ResponseEntity<Recipe>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
@@ -64,9 +57,9 @@ public class RecipeRestController {
     }
 
     @DeleteMapping (value = "/delete")
-    HttpStatus deleteRecipe (@RequestBody TextNode name) {
+    HttpStatus deleteIngredient (@RequestParam int id) {
         try {
-            recipeService.delete(Integer.parseInt(name.textValue()));
+            recipeService.delete(id);
             return HttpStatus.OK;
         } catch (NotFoundException e) {
             return HttpStatus.NOT_FOUND;

@@ -1,7 +1,5 @@
-package web.restControllers;
+package web.restControllers.json;
 
-import com.fasterxml.jackson.databind.node.TextNode;
-import javassist.NotFoundException;
 import model.Recipe;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;

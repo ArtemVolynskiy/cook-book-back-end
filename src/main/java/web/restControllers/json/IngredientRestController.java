@@ -1,17 +1,13 @@
-package web.restControllers;
+package web.restControllers.json;
 
-import com.fasterxml.jackson.databind.node.TextNode;
+
 import javassist.NotFoundException;
 import model.Ingredient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import service.IngredientService;
 
 import javax.persistence.NoResultException;
@@ -41,7 +37,7 @@ public class IngredientRestController {
     ResponseEntity<Ingredient> findIngredient (@RequestParam ("name") String name) {
         try {
             Ingredient foundIngredient = ingredientService.findByName(name.toLowerCase());
-            return new ResponseEntity<Ingredient>(foundIngredient, HttpStatus.FOUND);
+            return new ResponseEntity<Ingredient>(foundIngredient, HttpStatus.OK);
         } catch (NoResultException e) {
             return new ResponseEntity<Ingredient>(HttpStatus.NOT_FOUND);
         }
