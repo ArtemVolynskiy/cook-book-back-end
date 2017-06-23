@@ -15,8 +15,11 @@
         <csrf disabled="true"/>
     </http>
 
+    <beans:bean class="util.PasswordUtil" id="passwordEncoder" factory-method="getPasswordEncoder"/>
+
     <authentication-manager>
-        <authentication-provider user-service-ref="userService">
+        <authentication-provider user-service-ref="userServiceImpl">
+            <password-encoder ref="passwordEncoder"/>
             <!--<user-service>-->
                 <!--<user name="user@yandex.ru" password="password" authorities="ROLE_USER"/>-->
                 <!--<user name="admin@gmail.com" password="admin" authorities="ROLE_ADMIN"/>-->

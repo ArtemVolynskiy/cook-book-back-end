@@ -9,8 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import service.RecipeService;
 import service.UserService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import web.restControllers.user.AuthorizedUser;
 
 import javax.persistence.NoResultException;
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -56,12 +59,9 @@ public class UserRestController {
     }
 
     @PutMapping (value = "/saverecipe", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<User> saveRecipe(@RequestParam int id, @RequestBody Recipe recipe) {
-
+    ResponseEntity<User> saveRecipe(@RequestBody Recipe recipe ) {
         try {
-            User user = userService.findById(id);
-            user.getUserRecipes().add(recipe);
-            return new ResponseEntity<>(userService.save(user), HttpStatus.FOUND);
+            return new ResponseEntity<>(userService.saveRecipe(AuthorizedUser.id(), recipe), HttpStatus.FOUND);
         } catch (NullPointerException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

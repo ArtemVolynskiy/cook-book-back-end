@@ -48,7 +48,7 @@ public class User extends NamedEntity {
 
     @Column (name = "password", nullable = false)
     @NotEmpty
-    @Length(min = 6, max = 50)
+    @Length(min = 6)
     private String password;
 
     @Column (name = "enabled", nullable = false, columnDefinition = "bool default true")

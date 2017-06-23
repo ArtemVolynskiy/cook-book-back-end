@@ -2,6 +2,7 @@ package service;
 
 
 import javassist.NotFoundException;
+import model.Recipe;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,11 +11,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import repository.UserRepository;
 import org.springframework.util.Assert;
+import util.PasswordUtil;
 import web.restControllers.user.AuthorizedUser;
 
 import java.util.List;
 
-@Service("userService")
+@Service("userServiceImpl")
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
@@ -25,7 +27,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     public User save(User user) {
-        return userRepository.save(user);
+        User u = userRepository.save(user);
+        u.setPassword("");
+        return u;
+    }
+
+    public User saveRecipe(int userId, Recipe recipe) {
+        User user = findById(userId);
+        user.getUserRecipes().add(recipe);
+        return save(user);
     }
 
     public void delete(int id) throws NotFoundException {

@@ -2,6 +2,7 @@ package service;
 
 
 import javassist.NotFoundException;
+import model.Recipe;
 import model.User;
 
 import java.util.List;
@@ -9,6 +10,8 @@ import java.util.List;
 public interface UserService {
 
     User save(User user);
+
+    User saveRecipe (int id, Recipe recipe);
 
     void delete (int id) throws NotFoundException;
 

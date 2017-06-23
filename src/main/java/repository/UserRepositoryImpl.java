@@ -5,6 +5,7 @@ import model.User;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import util.PasswordUtil;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -21,6 +22,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Transactional
     public User save(User user) {
         if (user.isNew()){
+            user.setPassword(PasswordUtil.encode(user.getPassword()));
             em.persist(user);
             return user;
         } else {

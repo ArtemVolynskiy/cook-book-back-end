@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import service.IngredientService;
+import web.restControllers.user.AuthorizedUser;
 
 import javax.persistence.NoResultException;
 import java.util.List;
