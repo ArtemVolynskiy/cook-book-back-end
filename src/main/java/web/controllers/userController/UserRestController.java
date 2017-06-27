@@ -1,4 +1,4 @@
-package web.restControllers.json;
+package web.controllers.userController;
 
 import model.Recipe;
 import model.User;
@@ -9,11 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import service.RecipeService;
 import service.UserService;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import web.restControllers.user.AuthorizedUser;
 
 import javax.persistence.NoResultException;
-import javax.validation.Valid;
 import java.util.List;
 
 

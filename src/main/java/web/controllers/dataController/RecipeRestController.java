@@ -1,4 +1,4 @@
-package web.restControllers.json;
+package web.controllers.dataController;
 
 import javassist.NotFoundException;
 import model.Recipe;
@@ -15,10 +15,9 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@CrossOrigin()
 @RequestMapping (RecipeRestController.RECIPE_URL)
 public class RecipeRestController {
-    static final String RECIPE_URL = "/admin/recipe";
+    static final String RECIPE_URL = "/recipe";
 
     private final
     RecipeService recipeService;

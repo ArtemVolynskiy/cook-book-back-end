@@ -1,4 +1,4 @@
-package web.restControllers.json;
+package web.json;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;

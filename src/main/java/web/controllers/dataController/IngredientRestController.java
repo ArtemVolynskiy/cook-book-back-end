@@ -1,4 +1,4 @@
-package web.restControllers.json;
+package web.controllers.dataController;
 
 
 import javassist.NotFoundException;
@@ -9,16 +9,14 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import service.IngredientService;
-import web.restControllers.user.AuthorizedUser;
 
 import javax.persistence.NoResultException;
 import java.util.List;
 
 @RestController
-@CrossOrigin()
 @RequestMapping (value = IngredientRestController.INGREDIENTS_URL)
 public class IngredientRestController {
-    static final String INGREDIENTS_URL = "/admin/ingredient";
+    static final String INGREDIENTS_URL = "/ingredient";
 
     private final
     IngredientService ingredientService;
@@ -38,9 +36,9 @@ public class IngredientRestController {
     ResponseEntity<Ingredient> findIngredient (@RequestParam ("name") String name) {
         try {
             Ingredient foundIngredient = ingredientService.findByName(name.toLowerCase());
-            return new ResponseEntity<Ingredient>(foundIngredient, HttpStatus.OK);
+            return new ResponseEntity<>(foundIngredient, HttpStatus.OK);
         } catch (NoResultException e) {
-            return new ResponseEntity<Ingredient>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 

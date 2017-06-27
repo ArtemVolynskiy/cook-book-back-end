@@ -68,7 +68,7 @@ public class User extends NamedEntity {
     @Range (min = 500, max = 6000)
     private Integer calories;
 
-    @ManyToMany (fetch = FetchType.LAZY)
+    @ManyToMany (fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinTable(
             name = "users_recipe",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -92,7 +92,6 @@ public class User extends NamedEntity {
         this.calories = calories;
         this.enabled = enabled;
         this.roles = roles;
-
     }
 
 

@@ -1,4 +1,4 @@
-package web.restControllers.user;
+package web.controllers.userController;
 
 
 import model.User;
@@ -21,7 +21,6 @@ public class AuthorizedUser extends org.springframework.security.core.userdetail
     private static AuthorizedUser safeGet() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
-            System.out.println("NULL!!");
             return null;
         }
         Object principal = authentication.getPrincipal();
