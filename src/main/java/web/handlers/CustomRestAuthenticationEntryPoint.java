@@ -22,7 +22,7 @@ public class CustomRestAuthenticationEntryPoint extends BasicAuthenticationEntry
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
         PrintWriter writer = response.getWriter();
-        writer.println("HTTP Status 401 - " + authEx.getMessage());
+        writer.println("HTTP Status 406 - " + authEx.getMessage());
     }
 
     @Override

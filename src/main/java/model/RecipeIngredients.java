@@ -7,18 +7,6 @@ import javax.persistence.*;
 @Entity
 @Table (name = "recipe_ingredients")
 public class RecipeIngredients {
-    public RecipeIngredients(){}
-
-    public RecipeIngredients (RecipeIngredientsPK recipeIngredientsPK, Recipe recipe, Ingredient ingredient, String quantity) {
-        this.id = recipeIngredientsPK;
-        this.recipe = recipe;
-        this.ingredient = ingredient;
-        this.quantity = quantity;
-    }
-
-    public RecipeIngredients (RecipeIngredients recipeIngredients) {
-        this(recipeIngredients.getId(), recipeIngredients.getRecipe(), recipeIngredients.getIngredient(), recipeIngredients.getQuantity());
-    }
 
     @EmbeddedId
     private RecipeIngredientsPK id;
@@ -36,6 +24,23 @@ public class RecipeIngredients {
 
     @Column(name = "quantity")
     private String quantity;
+
+
+
+    public RecipeIngredients(){}
+
+    public RecipeIngredients (RecipeIngredientsPK recipeIngredientsPK, Recipe recipe, Ingredient ingredient, String quantity) {
+        this.id = recipeIngredientsPK;
+        this.recipe = recipe;
+        this.ingredient = ingredient;
+        this.quantity = quantity;
+    }
+
+    public RecipeIngredients (RecipeIngredients recipeIngredients) {
+        this(recipeIngredients.getId(), recipeIngredients.getRecipe(), recipeIngredients.getIngredient(), recipeIngredients.getQuantity());
+    }
+
+
 
     public Ingredient getIngredient() {
         return ingredient;

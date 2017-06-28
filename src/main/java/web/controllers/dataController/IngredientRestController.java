@@ -1,7 +1,7 @@
 package web.controllers.dataController;
 
 
-import javassist.NotFoundException;
+
 import model.Ingredient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,64 +9,52 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import service.IngredientService;
+import web.controllers.AbstractIngredientController;
 
-import javax.persistence.NoResultException;
 import java.util.List;
 
 @RestController
 @RequestMapping (value = IngredientRestController.INGREDIENTS_URL)
-public class IngredientRestController {
-    static final String INGREDIENTS_URL = "/ingredient";
+public class IngredientRestController extends AbstractIngredientController {
+    static final String INGREDIENTS_URL = "/admin/ingredient";
 
-    private final
-    IngredientService ingredientService;
+
 
     @Autowired
     public IngredientRestController(IngredientService ingredientService) {
-        this.ingredientService = ingredientService;
+       super(ingredientService);
     }
 
 
-    @GetMapping (value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @GetMapping (produces = MediaType.APPLICATION_JSON_VALUE)
     String greetings () {
-        return "Welcome to ingredients controller!";
+        return super.greetings();
     }
 
-    @GetMapping (value = "/find", produces = MediaType.APPLICATION_JSON_VALUE)
+    public @GetMapping (value = "/find", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<Ingredient> findIngredient (@RequestParam ("name") String name) {
-        try {
-            Ingredient foundIngredient = ingredientService.findByName(name.toLowerCase());
-            return new ResponseEntity<>(foundIngredient, HttpStatus.OK);
-        } catch (NoResultException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+       return super.findIngredient(name);
     }
 
-    @PutMapping (value = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @PutMapping (value = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<Ingredient> createIngredient (@RequestBody Ingredient ingredient ) {
-        return new ResponseEntity<Ingredient>(ingredientService.save(ingredient), HttpStatus.CREATED);
+        return super.createIngredient(ingredient);
     }
 
-    @PostMapping (value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public @PostMapping (value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE)
     HttpStatus updateIngredient(@RequestBody Ingredient ingredient) {
-        ingredientService.update(ingredient);
-        return HttpStatus.OK;
+        return super.updateIngredient(ingredient);
     }
 
-    @DeleteMapping (value = "/delete")
+    public @DeleteMapping (value = "/delete")
     HttpStatus deleteIngredient (@RequestParam int id) {
-        try {
-            ingredientService.delete(id);
-            return HttpStatus.OK;
-        } catch (NotFoundException e) {
-            return HttpStatus.NOT_FOUND;
-        }
+      return super.deleteIngredient(id);
     }
 
 
-    @GetMapping (value = "/all", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @GetMapping (value = "/all", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<List<Ingredient>> findAll () {
-        return new ResponseEntity<>(ingredientService.getAll(), HttpStatus.OK);
+        return super.findAll();
     }
 
 }

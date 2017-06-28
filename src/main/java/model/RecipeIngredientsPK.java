@@ -9,14 +9,13 @@ import java.io.Serializable;
 @Table (name = "recipe_ingredients")
 public class RecipeIngredientsPK implements Serializable {
 
-    public RecipeIngredientsPK(){}
-
-
     @Column (name = "INGREDIENT_ID")
     private int ingredient_id;
 
     @Column (name = "RECIPE_ID")
     private int recipe_id;
+
+    public RecipeIngredientsPK(){}
 
 
     public int getIngredient_id() {
