@@ -3,7 +3,6 @@ package model;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @MappedSuperclass
 @Access(AccessType.PROPERTY)
@@ -15,7 +14,7 @@ public class NamedEntity extends BaseEntity {
 
     public NamedEntity(){}
 
-    protected NamedEntity(Integer id, String name) {
+    NamedEntity(Integer id, String name) {
         super(id);
         this.name = name;
     }

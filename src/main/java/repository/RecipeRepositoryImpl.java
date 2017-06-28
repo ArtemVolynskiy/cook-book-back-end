@@ -2,7 +2,6 @@ package repository;
 
 
 import model.Recipe;
-import model.RecipeIngredients;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -7,6 +7,5 @@ public class ErrorInfo {
     }
 
     private ErrorInfo(CharSequence requestURL, String cause, String... details) {
-        String url = requestURL.toString();
     }
 }

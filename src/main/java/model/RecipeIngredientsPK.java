@@ -9,20 +9,18 @@ import java.io.Serializable;
 public class RecipeIngredientsPK implements Serializable {
 
     @Column (name = "INGREDIENT_ID")
-    private int ingredient_id;
+    private int ingredientId;
 
     @Column (name = "RECIPE_ID")
     private int recipeId;
 
-    public RecipeIngredientsPK(){}
 
-
-    public int getIngredient_id() {
-        return ingredient_id;
+    public int getIngredientId() {
+        return ingredientId;
     }
 
-    public void setIngredient_id(int ingredient_id) {
-        this.ingredient_id = ingredient_id;
+    public void setIngredientId(int ingredientId) {
+        this.ingredientId = ingredientId;
     }
 
     public int getRecipeId() {

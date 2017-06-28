@@ -12,7 +12,7 @@ public class RecipeIngredients {
     private RecipeIngredientsPK id;
 
     @ManyToOne
-    @MapsId("ingredient_id")
+    @MapsId("ingredientId")
     @JoinColumn(name = "INGREDIENT_ID")
     private Ingredient ingredient;
 
