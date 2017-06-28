@@ -1,7 +1,6 @@
 package model;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
 import java.io.Serializable;
 
 @Embeddable
@@ -13,7 +12,7 @@ public class RecipeIngredientsPK implements Serializable {
     private int ingredient_id;
 
     @Column (name = "RECIPE_ID")
-    private int recipe_id;
+    private int recipeId;
 
     public RecipeIngredientsPK(){}
 
@@ -26,11 +25,11 @@ public class RecipeIngredientsPK implements Serializable {
         this.ingredient_id = ingredient_id;
     }
 
-    public int getRecipe_id() {
-        return recipe_id;
+    public int getRecipeId() {
+        return recipeId;
     }
 
-    public void setRecipe_id(int recipe_id) {
-        this.recipe_id = recipe_id;
+    public void setRecipeId(int recipe_id) {
+        this.recipeId = recipe_id;
     }
 }

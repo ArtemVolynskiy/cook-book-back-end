@@ -17,7 +17,7 @@ public class RecipeIngredients {
     private Ingredient ingredient;
 
     @ManyToOne
-    @MapsId("recipe_id")
+    @MapsId("recipeId")
     @JoinColumn(name = "RECIPE_ID")
     @JsonBackReference
     private Recipe recipe;
@@ -29,7 +29,7 @@ public class RecipeIngredients {
 
     public RecipeIngredients(){}
 
-    public RecipeIngredients (RecipeIngredientsPK recipeIngredientsPK, Recipe recipe, Ingredient ingredient, String quantity) {
+    private RecipeIngredients(RecipeIngredientsPK recipeIngredientsPK, Recipe recipe, Ingredient ingredient, String quantity) {
         this.id = recipeIngredientsPK;
         this.recipe = recipe;
         this.ingredient = ingredient;
@@ -42,7 +42,7 @@ public class RecipeIngredients {
 
 
 
-    public Ingredient getIngredient() {
+    private Ingredient getIngredient() {
         return ingredient;
     }
 
@@ -66,7 +66,7 @@ public class RecipeIngredients {
         this.id = id;
     }
 
-    public String getQuantity() {
+    private String getQuantity() {
         return quantity;
     }
 
