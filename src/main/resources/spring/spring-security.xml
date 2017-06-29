@@ -6,21 +6,57 @@
 	http://www.springframework.org/schema/security
 	http://www.springframework.org/schema/security/spring-security.xsd">
 
+
+    <beans:bean id="entryPoint" class="web.handlers.CustomRestAuthenticationEntryPoint"/>
+    <beans:bean id="myAuthenticationSuccessHandler" class="web.handlers.CustomSavedRequestAwareAuthenticationSuccessHandler" />
+    <beans:bean id="myUrlAuthenticationFailureHandler" class="web.handlers.CustomUrlAuthenticationFailureHandler" />
+    <beans:bean id="myLogoutSuccessHandler" class="web.handlers.CustomLogoutSuccessHandler" />
+    <beans:bean id="customAccessDeniedHandler" class="web.handlers.CustomAccessDeniedHandler" />
+    <beans:bean id="myFilter" class="util.SimpleCorsFilter" />
+
+    <beans:bean class="util.PasswordUtil" id="passwordEncoder" factory-method="getPasswordEncoder"/>
+
+
+
     <http pattern="/resources/**" security="none"/>
 
     <http pattern="/**" use-expressions="true" name="restSecurityFilterChain" create-session="stateless">
-        <http-basic/>
+        <custom-filter after="BASIC_AUTH_FILTER" ref="myFilter" />
+        <http-basic entry-point-ref="entryPoint"/>
         <intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
-        <intercept-url pattern="/**" access="isAuthenticated()"/>
+        <intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
         <csrf disabled="true"/>
     </http>
 
+    <!--<http entry-point-ref="entryPoint">-->
+        <!--<intercept-url pattern="/login" access="permitAll"/>-->
+        <!--<intercept-url pattern="/register" access="permitAll"/>-->
+
+        <!--<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>-->
+        <!--<intercept-url pattern="/**" access="isAuthenticated()" />-->
+        <!--<form-login login-page="/login"-->
+                    <!--login-processing-url="/spring_security_check"-->
+                    <!--authentication-failure-handler-ref="myUrlAuthenticationFailureHandler"-->
+                    <!--authentication-success-handler-ref="myAuthenticationSuccessHandler"/>-->
+
+        <!--<csrf disabled="true"/>-->
+        <!--<access-denied-handler ref="customAccessDeniedHandler" />-->
+        <!--<logout logout-url="/logout" success-handler-ref="myLogoutSuccessHandler" delete-cookies="JSESSIONID" invalidate-session="true"/>-->
+    <!--</http>-->
+
+
+
     <authentication-manager>
-        <authentication-provider>
-            <user-service>
-                <user name="user@yandex.ru" password="password" authorities="ROLE_USER"/>
-                <user name="admin@gmail.com" password="admin" authorities="ROLE_ADMIN"/>
-            </user-service>
+        <authentication-provider user-service-ref="userServiceImpl">
+            <password-encoder ref="passwordEncoder"/>
+            <!--<user-service>-->
+                <!--<user name="user@yandex.ru" password="password" authorities="ROLE_USER"/>-->
+                <!--<user name="admin@gmail.com" password="admin" authorities="ROLE_ADMIN"/>-->
+            <!--</user-service>-->
+            <!--<jdbc-user-service data-source-ref="dataSource"-->
+                               <!--users-by-username-query="SELECT email, password, enabled FROM users WHERE email = ?"-->
+                               <!--authorities-by-username-query="-->
+                                    <!--SELECT u.email, r.user_role FROM users u, user_roles r WHERE u.id = r.user_id AND u.email = ?"/>-->
         </authentication-provider>
     </authentication-manager>
 </beans:beans>

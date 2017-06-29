@@ -13,8 +13,7 @@ public interface RecipeRepository {
 
     Recipe findByName (String name);
 
-    // False if not found
-    boolean delete (String name);
+    void delete (int id);
 
     List<Recipe> getAll();
 

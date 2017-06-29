@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
-    <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/71ea7c7b-3864-4ec2-9c19-a61d8b6f1818/console.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/spring/spring-security.xml" dialect="PostgreSQL" />
   </component>
 </project>

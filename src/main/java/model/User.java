@@ -5,6 +5,7 @@ package model;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -38,24 +39,36 @@ public class User extends NamedEntity {
     @NotEmpty
     private String email;
 
+    @Column (name = "secondname")
+    private String secondName;
+
+    @Column (name = "nickname")
+    @NotEmpty
+    private String nickname;
+
     @Column (name = "password", nullable = false)
     @NotEmpty
-    @Length(min = 6, max = 50)
+    @Length(min = 6)
     private String password;
 
-    @Column (name = "enabled", nullable = false)
+    @Column (name = "enabled", nullable = false, columnDefinition = "bool default true")
     private boolean enabled;
 
-    @Column (name = "role", nullable = false)
-    private String role;
+    @Enumerated(EnumType.STRING)
+    @CollectionTable (name = "user_roles", joinColumns = {@JoinColumn(name = "user_id")})
+    @Column (name = "user_role")
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<Role> roles;
 
-    @Column (name = "registered", columnDefinition = "timestamp default now")
+    @Column (name = "registered", columnDefinition = "timestamp default now()")
+    @Temporal(TemporalType.DATE)
     private Date registered = new Date();
 
     @Column (name = "calories", nullable = false)
+    @Range (min = 500, max = 6000)
     private Integer calories;
 
-    @ManyToMany (fetch = FetchType.LAZY)
+    @ManyToMany (fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinTable(
             name = "users_recipe",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -67,17 +80,18 @@ public class User extends NamedEntity {
     public User (){}
 
     public User(User user) {
-        this(user.getId(), user.getName(), user.getEmail(), user.getPassword(),user.getCalories(), user.isEnabled(), user.role);
+        this(user.getId(), user.getName(),user.secondName, user.nickname, user.getEmail(), user.getPassword(),user.getCalories(), user.isEnabled(), user.roles);
     }
 
-    public User(int id, String name, String email, String password, int calories, boolean enabled, String role ){
+    public User(int id, String name, String secondName, String nickname, String email, String password, int calories, boolean enabled, Set<Role> roles ){
         super(id, name);
         this.email = email;
+        this.secondName = secondName;
+        this.nickname = nickname;
         this.password = password;
         this.calories = calories;
         this.enabled = enabled;
-        this.role = role;
-
+        this.roles = roles;
     }
 
 
@@ -93,7 +107,7 @@ public class User extends NamedEntity {
         this.enabled = enabled;
     }
 
-    private String getEmail() {
+    public String getEmail() {
         return email;
     }
 
@@ -117,12 +131,12 @@ public class User extends NamedEntity {
         this.calories = calories;
     }
 
-    private String getRole() {
-        return role;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setCalories(String role) {
-        this.role = role;
+    public void setCalories(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public Set<Recipe> getUserRecipes() {
@@ -144,4 +158,19 @@ public class User extends NamedEntity {
                 ", daily Calories: " + getCalories();
     }
 
+    public String getSecondName() {
+        return secondName;
+    }
+
+    public void setSecondName(String secondName) {
+        this.secondName = secondName;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 }

@@ -10,7 +10,7 @@ public interface IngredientService {
 
     Ingredient save (Ingredient ingredient);
 
-    void delete (String name) throws NotFoundException;
+    void delete (int id) throws NotFoundException;
 
     Ingredient get (int id) throws NotFoundException;
 

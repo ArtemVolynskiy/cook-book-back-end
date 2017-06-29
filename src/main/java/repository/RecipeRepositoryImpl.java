@@ -27,6 +27,7 @@ public class RecipeRepositoryImpl implements RecipeRepository {
         }
     }
 
+
     @Override
     public Recipe get(int id) {
         return em.find(Recipe.class, id);
@@ -39,8 +40,8 @@ public class RecipeRepositoryImpl implements RecipeRepository {
 
     @Override
     @Transactional
-    public boolean delete(String name) {
-        return em.createNamedQuery(Recipe.DELETE).setParameter("name", name).executeUpdate() != 0;
+    public void delete(int id) {
+        em.remove(em.find(Recipe.class, id));
     }
 
     @Override

@@ -14,7 +14,7 @@ public interface IngredientRepository {
     Ingredient findByName (String name);
 
     // False if not found
-    boolean delete (String name);
+    void delete (int id);
 
     List<Ingredient> getAll();
 

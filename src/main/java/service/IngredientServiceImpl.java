@@ -25,8 +25,8 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    public void delete(String name) throws NotFoundException {
-        ingredientRepository.delete(name.toLowerCase());
+    public void delete(int id) throws NotFoundException {
+        ingredientRepository.delete(id);
     }
 
     @Override

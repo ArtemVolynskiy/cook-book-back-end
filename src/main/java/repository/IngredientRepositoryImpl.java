@@ -40,8 +40,8 @@ public class IngredientRepositoryImpl implements IngredientRepository {
 
     @Override
     @Transactional
-    public boolean delete(String name) {
-        return em.createNamedQuery(Ingredient.DELETE).setParameter("name", name).executeUpdate() != 0;
+    public void delete(int id) {
+        em.remove(em.find(Ingredient.class, id));
     }
 
     @Override

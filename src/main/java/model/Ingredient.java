@@ -1,11 +1,7 @@
 package model;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -17,7 +13,7 @@ import java.util.Set;
 }
 )
 public class Ingredient extends NamedEntity {
-    public static final String DELETE = "Ingredient.delete";
+    static final String DELETE = "Ingredient.delete";
     public static final String FIND = "Ingredient.find";
     public static final String GET_ALL = "Ingredient.all";
 
@@ -32,9 +28,10 @@ public class Ingredient extends NamedEntity {
     @Column (name = "quantity")
     private int quantity;
 
+
     public Ingredient(){}
 
-    public Ingredient(int id, String name, int price, boolean available) {
+    private Ingredient(int id, String name, int price, boolean available) {
         super(id, name);
         this.available = available;
         this.price = price;

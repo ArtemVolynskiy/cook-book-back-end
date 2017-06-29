@@ -1,23 +1,21 @@
 package service;
 
 
-import com.fasterxml.jackson.databind.node.TextNode;
 import javassist.NotFoundException;
 import model.Recipe;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import repository.UserRepository;
 import org.springframework.util.Assert;
-import utils.ActivityLevel;
-import utils.CaloriesUtil;
-import utils.Goal;
-import utils.Sex;
+import web.controllers.userController.AuthorizedUser;
 
 import java.util.List;
 
-@Service
-public class UserServiceImpl implements UserService {
+@Service("userServiceImpl")
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
 
@@ -27,15 +25,32 @@ public class UserServiceImpl implements UserService {
     }
 
     public User save(User user) {
-        return userRepository.save(user);
+        User u = userRepository.save(user);
+        u.setPassword("");
+        return u;
+    }
+
+    public User saveRecipe(int userId, Recipe recipe) {
+        User user = findById(userId);
+        user.getUserRecipes().add(recipe);
+        return save(user);
     }
 
     public void delete(int id) throws NotFoundException {
         userRepository.delete(id);
     }
 
-    public User get(int id) throws NotFoundException {
-        return userRepository.get(id);
+    public User get(int id) throws NotFoundException { // Returns instance without recipes
+        User user = userRepository.get(id);
+        user.setPassword("");
+        return user;
+    }
+
+    @Override
+    public User findById(int id) {  // Returns instance and recipes
+        User user = userRepository.findById(id);
+        user.setPassword("");
+        return user;
     }
 
     @Override
@@ -43,10 +58,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByName(name);
     }
 
-    @Override
-    public User findById(int id) {
-        return userRepository.findById(id);
-    }
 
     public User getByEmail(String email) throws NotFoundException {
         return userRepository.getByEmail(email);
@@ -62,28 +73,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User saveRecipe(int id, Recipe recipe) {
-        User user = findById(id);
-        user.getUserRecipes().add(recipe);
-        return save(user);
+    public AuthorizedUser loadUserByUsername(String email) throws UsernameNotFoundException {
+        User u = userRepository.getByEmail(email.toLowerCase());
+        if (u == null) {
+            throw new UsernameNotFoundException("User" + email + " not found");
+        }
+        return new AuthorizedUser(u);
     }
-
-    @Override
-    public void countDailyCalories(int userId, TextNode userInfo) throws NotFoundException, IllegalArgumentException {
-
-        String [] userData = userInfo.textValue().split(" ");
-        Sex sex = Sex.valueOf(userData[0]);
-        float weight = Float.parseFloat(userData[1]);
-        float height = Float.parseFloat(userData[2]);
-        int age = Integer.parseInt(userData[3]);
-        ActivityLevel activityLevel = ActivityLevel.valueOf(userData[4]);
-        Goal goal = Goal.valueOf(userData[5]);
-
-        int dailyCalories = CaloriesUtil.countDailyCalories(sex, weight, height, age, activityLevel, goal);
-        User user = this.get(userId);
-        user.setCalories(dailyCalories);
-        this.save(user);
-    }
-
-
 }

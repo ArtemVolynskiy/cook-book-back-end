@@ -1,7 +1,5 @@
-package web.restControllers;
+package web.controllers.userController;
 
-import com.fasterxml.jackson.databind.node.TextNode;
-import javassist.NotFoundException;
 import model.Recipe;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +11,6 @@ import service.RecipeService;
 import service.UserService;
 
 import javax.persistence.NoResultException;
-import javax.xml.soap.Text;
 import java.util.List;
 
 
@@ -44,6 +41,10 @@ public class UserRestController {
         return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
     }
 
+    @GetMapping (value = "/buildration", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Recipe>> findRecipe(@RequestBody User user) {
+        return new ResponseEntity<>(recipeService.getAll(), HttpStatus.FOUND); // TODO : build daily ration constructing algorithm
+    }
 
     @GetMapping (value = "/findrecipe", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Recipe> findRecipe (@RequestParam("name") String name) {
@@ -55,28 +56,11 @@ public class UserRestController {
     }
 
     @PutMapping (value = "/saverecipe", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<User> saveRecipe(@RequestParam int id, @RequestBody Recipe recipe) {
-
+    ResponseEntity<User> saveRecipe(@RequestBody Recipe recipe ) {
         try {
-            return new ResponseEntity<>(userService.saveRecipe(id, recipe), HttpStatus.FOUND);
+            return new ResponseEntity<>(userService.saveRecipe(AuthorizedUser.id(), recipe), HttpStatus.FOUND);
         } catch (NullPointerException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-    }
-
-    @GetMapping (value = "/buildration", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Recipe>> findRecipe(@RequestBody User user) {
-        return new ResponseEntity<>(recipeService.getAll(), HttpStatus.FOUND); // TODO : build daily ration constructing algorithm
-    }
-
-    @PutMapping (value = "/countcalories")
-    public HttpStatus countDailyCalories(@RequestParam int userId, @RequestBody TextNode userInfo){
-        try {
-            userService.countDailyCalories(userId, userInfo);
-            return HttpStatus.OK;
-        } catch (IllegalArgumentException | NotFoundException e) {
-            return HttpStatus.BAD_REQUEST;
-        }
-
     }
 }

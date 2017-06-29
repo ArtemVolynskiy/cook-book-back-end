@@ -13,6 +13,8 @@ public interface UserService {
 
     User save(User user);
 
+    User saveRecipe (int id, Recipe recipe);
+
     void delete (int id) throws NotFoundException;
 
     User get (int id) throws NotFoundException;
