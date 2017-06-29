@@ -1,4 +1,4 @@
-package utils;
+package util.ratecounter;
 
 
 public enum Sex {

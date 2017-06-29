@@ -1,4 +1,4 @@
-package utils;
+package util.ratecounter;
 
 import java.util.EnumMap;
 
