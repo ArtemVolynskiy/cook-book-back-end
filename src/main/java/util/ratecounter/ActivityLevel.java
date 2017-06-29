@@ -10,7 +10,7 @@ public enum ActivityLevel {
     HIGH,
     VERY_HIGH;
 
-    static final EnumMap<ActivityLevel, Float> activityValues = new EnumMap<ActivityLevel, Float>(ActivityLevel.class);
+    static final EnumMap<ActivityLevel, Float> activityValues = new EnumMap<>(ActivityLevel.class);
 
     static {
         activityValues.put(MINIMUM, 1.2F);

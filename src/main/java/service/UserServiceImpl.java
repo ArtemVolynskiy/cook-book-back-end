@@ -2,6 +2,7 @@ package service;
 
 
 import javassist.NotFoundException;
+import model.UserInfo;
 import model.Recipe;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import repository.UserRepository;
 import org.springframework.util.Assert;
+import util.ratecounter.CaloriesUtil;
 import web.controllers.userController.AuthorizedUser;
 
 import java.util.List;
@@ -36,11 +38,19 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return save(user);
     }
 
+    @Override
+    public User countCalories(UserInfo userInfo) throws NotFoundException {
+        User user = get(AuthorizedUser.id());
+        user.setCalories(CaloriesUtil.countDailyCalories(userInfo));
+        return userRepository.save(user);
+    }
+
+
     public void delete(int id) throws NotFoundException {
         userRepository.delete(id);
     }
 
-    public User get(int id) throws NotFoundException { // Returns instance without recipes
+    public User get(int id) throws NotFoundException  { // Returns instance without recipes
         User user = userRepository.get(id);
         user.setPassword("");
         return user;
@@ -67,10 +77,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepository.getAll();
     }
 
+    @Override
     public void update(User user) {
         Assert.notNull(user, "User must not be null");
         userRepository.save(user);
     }
+
 
     @Override
     public AuthorizedUser loadUserByUsername(String email) throws UsernameNotFoundException {

@@ -1,27 +1,29 @@
 package util.ratecounter;
 
 
+import model.UserInfo;
+
 public class CaloriesUtil {
 
 
-    public static int countDailyCalories(Sex sex, float weight, float height, int age, ActivityLevel activityLevel, Goal goal) {
-        float activityCoefficient = ActivityLevel.activityValues.get(activityLevel);
+    public static int countDailyCalories(UserInfo userInfo) {
+        float activityCoefficient = ActivityLevel.activityValues.get(userInfo.getActivityLevel());
         int dailyCalories = 0;
 
-        if (sex == Sex.MALE) {
-            dailyCalories =(int) ((88.67F + (13.4F * weight) + (4.8F * height) - (5.7F * age)) * activityCoefficient);
-        } else if (sex == Sex.FEMALE) {
-            dailyCalories =(int) ((447.6F + (9.2F * weight) + (3.1F * height) - (4.3F * age)) * activityCoefficient);
+        if (userInfo.getSex() == Sex.MALE) {
+            dailyCalories =(int) ((88.67F + (13.4F * userInfo.getWeight()) + (4.8F * userInfo.getHeight()) - (5.7F * userInfo.getAge())) * activityCoefficient);
+        } else if (userInfo.getSex() == Sex.FEMALE) {
+            dailyCalories =(int) ((447.6F + (9.2F * userInfo.getWeight()) + (3.1F * userInfo.getHeight()) - (4.3F * userInfo.getAge())) * activityCoefficient);
         }
 
-        System.out.println(dailyCalories);
 
         int coefficient = dailyCalories / 100 * 20;
-        if (goal == Goal.KEEP){
+
+        if (userInfo.getGoal() == Goal.KEEP){
             return dailyCalories;
-        } else if (goal == Goal.GAIN) {
+        } else if (userInfo.getGoal() == Goal.GAIN) {
             dailyCalories += coefficient;
-        } else if (goal == Goal.LOOSE) {
+        } else if (userInfo.getGoal() == Goal.LOOSE) {
             dailyCalories -= coefficient;
         }
         return dailyCalories;
