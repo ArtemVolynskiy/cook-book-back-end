@@ -25,9 +25,6 @@ public class ProfileRestController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> get() {
-        for (int i = 0; i < 1000; i++) {
-            System.out.println(AuthorizedUser.id());
-        }
         try {
             return new ResponseEntity<>(userService.get(AuthorizedUser.id()), HttpStatus.OK);
         } catch (NotFoundException e) {

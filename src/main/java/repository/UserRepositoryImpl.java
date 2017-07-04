@@ -1,13 +1,16 @@
 package repository;
 
 
+import model.Role;
 import model.User;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import util.PasswordUtil;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.HashSet;
 import java.util.List;
 
 @Repository
@@ -21,6 +24,10 @@ public class UserRepositoryImpl implements UserRepository {
     @Transactional
     public User save(User user) {
         if (user.isNew()){
+            user.setPassword(PasswordUtil.encode(user.getPassword()));
+            user.setRoles(new HashSet<Role>());
+            user.getRoles().add(Role.ROLE_USER);
+            user.getRoles().add(Role.ROLE_ADMIN);
             em.persist(user);
             return user;
         } else {

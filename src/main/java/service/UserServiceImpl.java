@@ -39,10 +39,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User countCalories(UserInfo userInfo) throws NotFoundException {
+    public void countCalories(UserInfo userInfo) throws NotFoundException {
         User user = get(AuthorizedUser.id());
         user.setCalories(CaloriesUtil.countDailyCalories(userInfo));
-        return userRepository.save(user);
+        userRepository.save(user);
     }
 
 
@@ -51,9 +51,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     public User get(int id) throws NotFoundException  { // Returns instance without recipes
-        User user = userRepository.get(id);
-        user.setPassword("");
-        return user;
+        return userRepository.get(id);
     }
 
     @Override

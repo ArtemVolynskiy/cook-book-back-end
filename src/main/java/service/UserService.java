@@ -29,5 +29,5 @@ public interface UserService {
 
     User saveRecipe(int id, Recipe recipe);
 
-    User countCalories(UserInfo userInfo) throws NotFoundException;
+    void countCalories(UserInfo userInfo) throws NotFoundException;
 }

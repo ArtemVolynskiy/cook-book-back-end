@@ -27,7 +27,7 @@ public class AdminRestController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    String greetings() {
+    public String greetings() {
         return "Welcome to administrative panel!";
     }
 
@@ -53,12 +53,12 @@ public class AdminRestController {
     }
 
     @PostMapping(value = "/update}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    void updateUser(@RequestBody User user) {
+    public void updateUser(@RequestBody User user) {
         userService.update(user);
     }
 
     @DeleteMapping (value = "/delete")
-    HttpStatus deleteIngredient (@RequestBody TextNode textNode) {
+    public HttpStatus deleteIngredient (@RequestBody TextNode textNode) {
         try {
             userService.delete(Integer.parseInt(textNode.textValue()));
             return HttpStatus.OK;
@@ -67,7 +67,7 @@ public class AdminRestController {
         }
     }
 
-    @GetMapping(value= "/all", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public @GetMapping(value= "/all", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     List<User> getAllUsers() {
         return userService.getAll();
     }

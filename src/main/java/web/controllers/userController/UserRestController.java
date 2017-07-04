@@ -1,7 +1,9 @@
 package web.controllers.userController;
 
+import javassist.NotFoundException;
 import model.Recipe;
 import model.User;
+import model.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -36,7 +38,8 @@ public class UserRestController {
         return "Welcome to user panel!";
     }
 
-    @PutMapping(value = "/create" ,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @CrossOrigin()
+    @PutMapping(value = "/register" ,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<User> createUser(@RequestBody User user) {
         return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
     }
@@ -52,6 +55,16 @@ public class UserRestController {
             return new ResponseEntity<>(recipeService.findByName(name), HttpStatus.FOUND);
         } catch ( NoResultException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping(value = "/countRate", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public HttpStatus countRate(@RequestBody UserInfo userInfo) {
+        try {
+            userService.countCalories(userInfo);
+            return HttpStatus.OK;
+        } catch (NotFoundException e) {
+            return HttpStatus.NON_AUTHORITATIVE_INFORMATION;
         }
     }
 

@@ -2,6 +2,7 @@ package model;
 
 
 
+import javafx.beans.DefaultProperty;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -13,6 +14,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @NamedQueries({
@@ -43,7 +45,6 @@ public class User extends NamedEntity {
     private String secondName;
 
     @Column (name = "nickname")
-    @NotEmpty
     private String nickname;
 
     @Column (name = "password", nullable = false)
@@ -52,11 +53,11 @@ public class User extends NamedEntity {
     private String password;
 
     @Column (name = "enabled", nullable = false, columnDefinition = "bool default true")
-    private boolean enabled;
+    private boolean enabled = true;
 
     @Enumerated(EnumType.STRING)
     @CollectionTable (name = "user_roles", joinColumns = {@JoinColumn(name = "user_id")})
-    @Column (name = "user_role")
+    @Column (name = "user_role", columnDefinition = "VARCHAR default ROLE_USER")
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
@@ -65,12 +66,12 @@ public class User extends NamedEntity {
     private Date registered = new Date();
 
     @Column (name = "calories", nullable = false)
-    @Range (min = 500, max = 6000)
+    @Range (min = 0, max = 6000)
     private Integer calories;
 
     @ManyToMany (fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinTable(
-            name = "users_recipe",
+            name = "user_recipe",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "recipe_id")
     )
@@ -79,11 +80,12 @@ public class User extends NamedEntity {
 
     public User (){}
 
+
     public User(User user) {
         this(user.getId(), user.getName(),user.secondName, user.nickname, user.getEmail(), user.getPassword(),user.getCalories(), user.isEnabled(), user.roles);
     }
 
-    public User(int id, String name, String secondName, String nickname, String email, String password, int calories, boolean enabled, Set<Role> roles ){
+    private User(int id, String name, String secondName, String nickname, String email, String password, int calories, boolean enabled, Set<Role> roles ){
         super(id, name);
         this.email = email;
         this.secondName = secondName;
@@ -135,7 +137,7 @@ public class User extends NamedEntity {
         return roles;
     }
 
-    public void setCalories(Set<Role> roles) {
+    public void setRoles (Set<Role> roles) {
         this.roles = roles;
     }
 

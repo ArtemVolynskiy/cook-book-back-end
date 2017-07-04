@@ -22,12 +22,12 @@ public class AbstractIngredientController {
 
 
 
-    public String greetings () {
+    protected String greetings () {
         return "Welcome to ingredients controller!";
     }
 
 
-    public ResponseEntity<Ingredient> findIngredient (String name) {
+    protected ResponseEntity<Ingredient> findIngredient (String name) {
         try {
             Ingredient foundIngredient = ingredientService.findByName(name.toLowerCase());
             return new ResponseEntity<>(foundIngredient, HttpStatus.OK);
@@ -37,18 +37,18 @@ public class AbstractIngredientController {
     }
 
 
-    public ResponseEntity<Ingredient> createIngredient (Ingredient ingredient ) {
+    protected ResponseEntity<Ingredient> createIngredient (Ingredient ingredient ) {
         return new ResponseEntity<>(ingredientService.save(ingredient), HttpStatus.CREATED);
     }
 
 
-    public HttpStatus updateIngredient(Ingredient ingredient) {
+    protected HttpStatus updateIngredient(Ingredient ingredient) {
         ingredientService.update(ingredient);
         return HttpStatus.OK;
     }
 
 
-    public HttpStatus deleteIngredient (int id) {
+    protected HttpStatus deleteIngredient (int id) {
         try {
             ingredientService.delete(id);
             return HttpStatus.OK;
@@ -59,7 +59,7 @@ public class AbstractIngredientController {
 
 
 
-    public ResponseEntity<List<Ingredient>> findAll () {
+    protected ResponseEntity<List<Ingredient>> findAll () {
         return new ResponseEntity<>(ingredientService.getAll(), HttpStatus.OK);
     }
 

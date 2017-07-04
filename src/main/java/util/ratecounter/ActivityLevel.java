@@ -1,13 +1,20 @@
 package util.ratecounter;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.EnumMap;
 
 
 public enum ActivityLevel {
+    @JsonProperty("minimum")
     MINIMUM,
+    @JsonProperty("low")
     LOW,
+    @JsonProperty("average")
     AVERAGE,
+    @JsonProperty("high")
     HIGH,
+    @JsonProperty("very_high")
     VERY_HIGH;
 
     static final EnumMap<ActivityLevel, Float> activityValues = new EnumMap<>(ActivityLevel.class);

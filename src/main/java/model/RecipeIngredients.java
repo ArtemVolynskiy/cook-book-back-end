@@ -22,7 +22,7 @@ public class RecipeIngredients {
     @JsonBackReference
     private Recipe recipe;
 
-    @Column(name = "quantity")
+    @Column(name = "ingredient_quantity")
     private String quantity;
 
 

@@ -14,11 +14,13 @@ public class UserInfo {
     private ActivityLevel activityLevel;
     private Goal goal;
 
+    public UserInfo () {}
+
     public UserInfo(UserInfo userInfo) {
         this(userInfo.sex, userInfo.weight, userInfo.height, userInfo.age, userInfo.activityLevel, userInfo.goal);
     }
 
-    private UserInfo(Sex sex, int weight, int height, int age, ActivityLevel activityLevel, Goal goal) {
+    public UserInfo(Sex sex, int weight, int height, int age, ActivityLevel activityLevel, Goal goal) {
         this.sex = sex;
         this.weight = weight;
         this.height = height;

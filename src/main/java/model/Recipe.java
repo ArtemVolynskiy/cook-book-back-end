@@ -23,7 +23,7 @@ public class Recipe extends NamedEntity {
     @NotNull
     private int calories;
 
-    @Column (name = "cooking_time")
+    @Column (name = "cookingtime")
     @NotNull
     private int cookingTimeMinutes;
 

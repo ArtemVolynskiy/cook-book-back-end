@@ -19,17 +19,17 @@ public class AbstractRecipeController {
 
 
 
-    public AbstractRecipeController(RecipeService recipeService) {
+    protected AbstractRecipeController(RecipeService recipeService) {
         this.recipeService = recipeService;
     }
 
 
-    public String greetings(){
+    protected String greetings(){
         return "Welcome to recipe controller!";
     }
 
 
-    public  ResponseEntity<Set<RecipeIngredients>> findRecipe(String name) {
+    protected  ResponseEntity<Set<RecipeIngredients>> findRecipe(String name) {
         try {
             Recipe recipe = recipeService.findByName(name.toLowerCase());
             return new ResponseEntity<>(recipe.getIngredients(), HttpStatus.OK);
@@ -39,19 +39,19 @@ public class AbstractRecipeController {
     }
 
 
-    public ResponseEntity<Recipe> createRecipe(Recipe recipe) {
+    protected ResponseEntity<Recipe> createRecipe(Recipe recipe) {
 
         return new ResponseEntity<>(recipeService.save(recipe), HttpStatus.CREATED);
     }
 
 
-    public HttpStatus updateRecipe(Recipe recipe) {
+    protected HttpStatus updateRecipe(Recipe recipe) {
         recipeService.update(recipe);
         return HttpStatus.OK;
     }
 
 
-    public HttpStatus deleteIngredient (int id) {
+    protected HttpStatus deleteIngredient (int id) {
         try {
             recipeService.delete(id);
             return HttpStatus.OK;
@@ -61,7 +61,7 @@ public class AbstractRecipeController {
     }
 
 
-    public ResponseEntity<List<Recipe>> getAllRecipes () {
+    protected ResponseEntity<List<Recipe>> getAllRecipes () {
         return  new ResponseEntity<>(recipeService.getAll(), HttpStatus.OK);
     }
 }

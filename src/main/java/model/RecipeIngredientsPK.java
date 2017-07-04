@@ -27,7 +27,7 @@ public class RecipeIngredientsPK implements Serializable {
         return recipeId;
     }
 
-    public void setRecipeId(int recipe_id) {
-        this.recipeId = recipe_id;
+    public void setRecipeId(int recipeId) {
+        this.recipeId = recipeId;
     }
 }

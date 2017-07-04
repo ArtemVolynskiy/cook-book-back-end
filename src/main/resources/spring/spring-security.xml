@@ -23,6 +23,7 @@
     <http pattern="/**" use-expressions="true" name="restSecurityFilterChain" create-session="stateless">
         <custom-filter after="BASIC_AUTH_FILTER" ref="myFilter" />
         <http-basic entry-point-ref="entryPoint"/>
+        <intercept-url pattern="/user/register" access="permitAll"/>
         <intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
         <csrf disabled="true"/>
