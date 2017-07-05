@@ -13,7 +13,7 @@
 
     <jdbc:initialize-database data-source="dataSource" enabled="true">
         <jdbc:script location="classpath:db/init_db.sql"/>
-        <!--<jdbc:script encoding="utf-8" location="classpath:db/populateDB.sql"/>-->
+        <jdbc:script encoding="utf-8" location="classpath:db/populateDB.sql"/>
     </jdbc:initialize-database>
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"

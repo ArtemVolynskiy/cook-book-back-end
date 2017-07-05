@@ -22,7 +22,7 @@ public class Ingredient extends NamedEntity {
     private int price;
 
     @Column (name = "available")
-    private boolean available;
+    private boolean available = true;
 
 
     @Column (name = "quantity")

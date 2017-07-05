@@ -44,8 +44,7 @@ CREATE TABLE ingredients
   name       VARCHAR NOT NULL,
   price      INTEGER NOT NULL,
   quantity   INTEGER,
-  available  BOOL DEFAULT TRUE,
-  calories_per_day INTEGER DEFAULT 2000 NOT NULL
+  available  BOOL DEFAULT TRUE
 );
 
 CREATE TABLE recipe
