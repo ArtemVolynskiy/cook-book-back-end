@@ -9,7 +9,6 @@ import repository.RecipeRepository;
 import util.rationbuilder.RationBuildingAlgorithm;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class RecipeServiceImpl implements RecipeService {
@@ -57,7 +56,6 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public List<Recipe> buildRation(int userCalories) {
         List<Recipe> allRecipes = this.recipeRepository.getAll();
-        List<Recipe> dailyRationRecipes = RationBuildingAlgorithm.buildRation(userCalories, allRecipes);
-        return dailyRationRecipes;
+        return RationBuildingAlgorithm.buildRation(userCalories, allRecipes);
     }
 }

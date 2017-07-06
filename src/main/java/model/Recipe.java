@@ -48,6 +48,7 @@ public class Recipe extends NamedEntity {
     public Recipe (int id, String name, String type, int calories, int cookingTimeMinutes, byte [] image, Set<RecipeIngredients> ingredients,
                    String recipe) {
         super(id, name);
+        this.type = type;
         this.calories = calories;
         this.cookingTimeMinutes = cookingTimeMinutes;
         this.image = image;
@@ -64,7 +65,7 @@ public class Recipe extends NamedEntity {
         this.calories = calories;
     }
 
-    public int getCookingTimeMinutes() {
+    private int getCookingTimeMinutes() {
         return cookingTimeMinutes;
     }
 

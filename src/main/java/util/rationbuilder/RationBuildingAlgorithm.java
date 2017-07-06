@@ -22,6 +22,7 @@ public class RationBuildingAlgorithm {
         Iterator lunchIterator = result.get("lunch").iterator();
         Iterator dinnerIterator = result.get("dinner").iterator();
 
+
         Recipe breakfast = (Recipe) breakfastIterator.next();
         Recipe lunch = (Recipe) lunchIterator.next();
         Recipe dinner = (Recipe) dinnerIterator.next();
@@ -82,7 +83,6 @@ public class RationBuildingAlgorithm {
     }
 
 
-
     private static List<Recipe> reduceCaloriesInFinalSet(Iterator breakfastIterator, Iterator lunchIterator,
                                                          Iterator dinnerIterator,  Recipe breakfast, Recipe lunch, Recipe dinner, int userCalories){
 
@@ -110,28 +110,24 @@ public class RationBuildingAlgorithm {
 
 
     private static Recipe findRecipeWithMoreCalories (Iterator iterator, Recipe recipe) {
-        boolean done = false;
         Recipe nextRecipe;
 
-        while (!done && iterator.hasNext()) {
+        while (iterator.hasNext()) {
             nextRecipe = (Recipe) iterator.next();
             if (recipe.getCalories() < nextRecipe.getCalories()) {
-                recipe = nextRecipe;
-                done = true;
+                return nextRecipe;
             }
         }
         return recipe;
     }
 
     private static Recipe findRecipeWithLessCalories (Iterator iterator, Recipe recipe) {
-        boolean done = false;
         Recipe nextRecipe;
 
-        while (!done && iterator.hasNext()) {
+        while (iterator.hasNext()) {
             nextRecipe = (Recipe) iterator.next();
             if (recipe.getCalories() > nextRecipe.getCalories()) {
-                recipe = nextRecipe;
-                done = true;
+                return nextRecipe;
             }
         }
         return recipe;
