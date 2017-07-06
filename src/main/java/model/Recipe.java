@@ -19,6 +19,10 @@ public class Recipe extends NamedEntity {
     public static final String GET_ALL = "Recipe.getAll";
     public static final String FIND_BY_NAME = "Recipe.find";
 
+    @Column (name = "type")
+    @NotNull
+    private String type;
+
     @Column (name = "calories")
     @NotNull
     private int calories;
@@ -41,7 +45,7 @@ public class Recipe extends NamedEntity {
 
     public Recipe () {}
 
-    public Recipe (int id, String name, int calories, int cookingTimeMinutes, byte [] image, Set<RecipeIngredients> ingredients,
+    public Recipe (int id, String name, String type, int calories, int cookingTimeMinutes, byte [] image, Set<RecipeIngredients> ingredients,
                    String recipe) {
         super(id, name);
         this.calories = calories;
@@ -100,5 +104,13 @@ public class Recipe extends NamedEntity {
                 + ", cooking time: " + this.getCookingTimeMinutes()
                 + ", ingredients" + this.getIngredients()
                 + ", recipe: " + this.getRecipe();
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

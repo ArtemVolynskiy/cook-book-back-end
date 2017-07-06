@@ -125,7 +125,7 @@ public class User extends NamedEntity {
         return registered;
     }
 
-    private Integer getCalories() {
+    public Integer getCalories() {
         return calories;
     }
 

@@ -45,8 +45,8 @@ public class UserRestController {
     }
 
     @GetMapping (value = "/buildration", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Recipe>> findRecipe(@RequestBody User user) {
-        return new ResponseEntity<>(recipeService.getAll(), HttpStatus.FOUND); // TODO : build daily ration constructing algorithm
+    public ResponseEntity<List<Recipe>> findRecipe(@RequestParam int calories) {
+        return new ResponseEntity<>(recipeService.buildRation(calories), HttpStatus.FOUND);
     }
 
     @GetMapping (value = "/findrecipe", produces = MediaType.APPLICATION_JSON_VALUE)

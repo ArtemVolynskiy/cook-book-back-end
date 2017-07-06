@@ -19,4 +19,6 @@ public interface RecipeService {
     List<Recipe> getAll ();
 
     void update (Recipe recipe);
+
+    List<Recipe> buildRation(int userCalories);
 }

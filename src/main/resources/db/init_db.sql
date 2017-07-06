@@ -51,6 +51,7 @@ CREATE TABLE recipe
 (
   id          INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
   name        VARCHAR NOT NULL,
+  type        VARCHAR NOT NULL,
   image       VARCHAR,
   recipe      VARCHAR NOT NULL,
   calories    INTEGER NOT NULL,
