@@ -55,7 +55,9 @@ CREATE TABLE recipe
   image       VARCHAR,
   recipe      VARCHAR NOT NULL,
   calories    INTEGER NOT NULL,
-  cookingtime INTEGER NOT NULL
+  servings    INTEGER NOT NULL,
+  cookingtime INTEGER NOT NULL,
+  preptime    INTEGER NOT NULL
 );
 
 CREATE TABLE recipe_ingredients

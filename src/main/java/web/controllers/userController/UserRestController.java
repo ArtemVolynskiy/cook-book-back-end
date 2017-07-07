@@ -46,13 +46,13 @@ public class UserRestController {
 
     @GetMapping (value = "/buildration", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Recipe>> findRecipe(@RequestParam int calories) {
-        return new ResponseEntity<>(recipeService.buildRation(calories), HttpStatus.FOUND);
+        return new ResponseEntity<>(recipeService.buildRation(calories), HttpStatus.OK);
     }
 
     @GetMapping (value = "/findrecipe", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Recipe> findRecipe (@RequestParam("name") String name) {
         try {
-            return new ResponseEntity<>(recipeService.findByName(name), HttpStatus.FOUND);
+            return new ResponseEntity<>(recipeService.findByName(name), HttpStatus.OK);
         } catch ( NoResultException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

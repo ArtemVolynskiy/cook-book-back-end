@@ -23,6 +23,9 @@ public class Recipe extends NamedEntity {
     @NotNull
     private String type;
 
+    @Column (name = "servings")
+    @NotNull
+    private int servings;
     @Column (name = "calories")
     @NotNull
     private int calories;
@@ -30,6 +33,10 @@ public class Recipe extends NamedEntity {
     @Column (name = "cookingtime")
     @NotNull
     private int cookingTimeMinutes;
+
+    @Column (name = "preptime")
+    @NotNull
+    private int prepTime;
 
     @Column (name = "image")
     private byte [] image;
@@ -45,7 +52,7 @@ public class Recipe extends NamedEntity {
 
     public Recipe () {}
 
-    public Recipe (int id, String name, String type, int calories, int cookingTimeMinutes, byte [] image, Set<RecipeIngredients> ingredients,
+    public Recipe (int id, String name, String type, int calories, int cookingTimeMinutes, int prepTime, byte [] image, Set<RecipeIngredients> ingredients,
                    String recipe) {
         super(id, name);
         this.type = type;
@@ -54,6 +61,7 @@ public class Recipe extends NamedEntity {
         this.image = image;
         this.ingredients = ingredients;
         this.recipe = recipe;
+        this.prepTime = prepTime;
     }
 
 
@@ -113,5 +121,21 @@ public class Recipe extends NamedEntity {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public int getPrepTime() {
+        return prepTime;
+    }
+
+    public void setPrepTime(int prepTime) {
+        this.prepTime = prepTime;
+    }
+
+    public int getServings() {
+        return servings;
+    }
+
+    public void setServings(int servings) {
+        this.servings = servings;
     }
 }

@@ -35,7 +35,7 @@ public class RationBuildingAlgorithm {
 
         while (!done){
             if (!breakfastIterator.hasNext() && !lunchIterator.hasNext() && !dinnerIterator.hasNext()) {
-                return null;
+                return new LinkedList<>();
             }
 
             if (!finalList.isEmpty()) {
