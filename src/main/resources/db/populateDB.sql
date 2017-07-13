@@ -8,7 +8,7 @@ DELETE FROM recipe_ingredients;
 
 -- USERS
 INSERT INTO users (name, secondname, nickname, email, password, calories)
-    VALUES ('Artem', 'Wolynski', 'klevy paren', 'art.volynskiy@gmail.com', '$2a$10$ssZsVuSJU0KKhe2QnGbeb.CnoFQbBl0Uker5D.LHtJtNsjA0DsVAS', 2000);
+VALUES ('Artem', 'Wolynski', 'klevy paren', 'art.volynskiy@gmail.com', '$2a$10$ssZsVuSJU0KKhe2QnGbeb.CnoFQbBl0Uker5D.LHtJtNsjA0DsVAS', 1600);
 
 INSERT INTO users (name, secondname, nickname, email, password, calories)
 VALUES ('Marina', 'Lytkina', 'objora', 'marina@gmail.com', '$2a$10$ssZsVuSJU0KKhe2QnGbeb.CnoFQbBl0Uker5D.LHtJtNsjA0DsVAS', 1800);
@@ -48,7 +48,7 @@ INSERT INTO ingredients (name, price, quantity) VALUES
 INSERT INTO recipe (name, recipe, type, calories, servings, preptime, cookingtime) VALUES
 
   -- Breakfast
-  ('Apple', 'Wash it', 'breakfast', 95, 1, 0, 2),
+  ('Apple', 'Wash it', 'snack', 95, 1, 0, 2),
   ('Apple & pecan porridge', 'For the basic porridge, place the oats and the milk (or 600ml water) into a large pan over a medium heat, and add a tiny pinch of sea salt.
 Bring to a steady simmer for 5 to 6 minutes, stirring often to give you a smooth, creamy porridge, and loosening with extra milk, if needed.
 Serve as is, or while it’s blipping away in the pan, follow the next steps to prepare the apple and pecan topping.
@@ -123,6 +123,12 @@ Heat a large skillet over medium high heat. Grill until browned, then turn and g
 Heat oil in a large skillet over medium heat. Saute beef until lightly browned. Stir in green pepper and onion, and season with salt and pepper. Saute until vegetables are tender, and remove from heat.
 Spread each bun generously with garlic mayonnaise. Divide beef mixture into the buns. Top with shredded cheese, and sprinkle with oregano. Place sandwiches on a baking pan.
 Heat sandwiches in preheated oven, until cheese is melted or slightly browned.','lunch', 935, 4, 10, 20),
+  ('Refreshing Lentil Salad', 'Bring the water and salt to a boil in a saucepan over high heat. Pour the lentils into the water while stirring constantly. Reduce heat to low, cover, and simmer until the lentils are tender but still hold their shape, about 30 minutes. Drain well.
+Transfer the lentils to a mixing bowl and stir in the garlic, seeded tomatoes, red onion, green bell pepper, and chile pepper. Add the juice of 1 lemon plus 1 teaspoon of the zest. Mix in the shredded carrot, olives, and cilantro.
+Season with salt and black pepper, and drizzle with olive oil; mix well. Refrigerate for at least an hour to allow the flavors to blend.
+Before serving, mix the salad again and add more lemon juice or olive oil if needed. Transfer to a serving dish and garnish with sliced eggs.', 'lunch', 431, 4, 25, 30),
+  ('Black Bean and Corn Quesadillas', 'Heat oil in a large saucepan over medium heat. Stir in onion, and cook until softened, about 2 minutes. Stir in beans and corn, then add sugar, salsa, and pepper flakes; mix well. Cook until heated through, about 3 minutes.
+Melt 2 teaspoons of the butter in a large skillet over medium heat. Place a tortilla in the skillet, sprinkle evenly with cheese, then top with some of the bean mixture. Place another tortilla on top, cook until golden, then flip and cook on the other side. Melt more butter as needed, and repeat with remaining tortillas and filling.', 'lunch', 363, 8, 10, 30),
 
   --Dinner
   ('Crispy Fried Chicken', 'Toss together chicken pieces, black pepper, salt, paprika, rosemary, thyme, oregano, sage, white pepper, and cayenne in a large bowl to coat.
@@ -175,3 +181,173 @@ Put bag of marinating beef in the freezer until the day before you wish to prepa
 Remove bag from freezer and put bag into a bowl and place in refrigerator to thaw, at least 24 hours before you wish to prepare the beef.
 Empty bag into the crock of a slow cooker.
 Cook on High until the beef is tender, 2 to 3 hours. Alternately, you can cook this on Low for 4 to 5 hours.','dinner', 320, 6, 5, 120);
+
+
+
+INSERT INTO drinks (name, calories) VALUES
+  ('Milk coffee', 54),
+  ('Tea with sugar',40),
+  ('Glass of milk', 146),
+  ('Glass of orange juice', 112),
+  ('Glass of apple juice', 117);
+
+INSERT INTO snacks (name, calories) VALUES
+  ('Apple', 95),
+  ('Banana', 105),
+  ('Orange', 62),
+  ('Oreo cookie', 105),
+  ('Cracker',81),
+  ('Dark chocolate', 524);
+
+INSERT INTO recipe_drinks (recipe_id, drink_id) VALUES
+  (100014, 100044),
+  (100015, 100044),
+  (100016, 100044),
+  (100017, 100044),
+  (100018, 100044),
+  (100019, 100044),
+  (100020, 100044),
+  (100021, 100044),
+  (100022, 100044),
+  (100023, 100044),
+  (100024, 100044),
+  (100025, 100044),
+  (100026, 100044),
+  (100027, 100044),
+  (100028, 100044),
+  (100029, 100044),
+  (100030, 100044),
+  (100031, 100044),
+  (100032, 100044),
+  (100033, 100044),
+  (100034, 100044),
+  (100035, 100044),
+  (100036, 100044),
+  (100037, 100044),
+  (100038, 100044),
+  (100039, 100044),
+  (100040, 100044),
+  (100041, 100044),
+  (100042, 100044),
+  (100043, 100044),
+  (100014, 100045),
+  (100015, 100045),
+  (100016, 100045),
+  (100017, 100045),
+  (100018, 100045),
+  (100019, 100045),
+  (100020, 100045),
+  (100021, 100045),
+  (100022, 100045),
+  (100023, 100045),
+  (100024, 100045),
+  (100025, 100045),
+  (100026, 100045),
+  (100027, 100045),
+  (100028, 100045),
+  (100029, 100045),
+  (100030, 100045),
+  (100031, 100045),
+  (100032, 100045),
+  (100033, 100045),
+  (100034, 100045),
+  (100035, 100045),
+  (100036, 100045),
+  (100037, 100045),
+  (100038, 100045),
+  (100039, 100045),
+  (100040, 100045),
+  (100041, 100045),
+  (100042, 100045),
+  (100043, 100045),
+  (100014, 100046),
+  (100015, 100046),
+  (100016, 100046),
+  (100017, 100046),
+  (100018, 100046),
+  (100019, 100046),
+  (100020, 100046),
+  (100021, 100046),
+  (100022, 100046),
+  (100023, 100046),
+  (100024, 100046),
+  (100025, 100046),
+  (100026, 100046),
+  (100027, 100046),
+  (100028, 100046),
+  (100029, 100046),
+  (100030, 100046),
+  (100031, 100046),
+  (100032, 100046),
+  (100033, 100046),
+  (100034, 100046),
+  (100035, 100046),
+  (100036, 100046),
+  (100037, 100046),
+  (100038, 100046),
+  (100039, 100046),
+  (100040, 100046),
+  (100041, 100046),
+  (100042, 100046),
+  (100043, 100046),
+  (100014, 100047),
+  (100015, 100047),
+  (100016, 100047),
+  (100017, 100047),
+  (100018, 100047),
+  (100019, 100047),
+  (100020, 100047),
+  (100021, 100047),
+  (100022, 100047),
+  (100023, 100047),
+  (100024, 100047),
+  (100025, 100047),
+  (100026, 100047),
+  (100027, 100047),
+  (100028, 100047),
+  (100029, 100047),
+  (100030, 100047),
+  (100031, 100047),
+  (100032, 100047),
+  (100033, 100047),
+  (100034, 100047),
+  (100035, 100047),
+  (100036, 100047),
+  (100037, 100047),
+  (100038, 100047),
+  (100039, 100047),
+  (100040, 100047),
+  (100041, 100047),
+  (100042, 100047),
+  (100043, 100047),
+  (100014, 100048),
+  (100015, 100048),
+  (100016, 100048),
+  (100017, 100048),
+  (100018, 100048),
+  (100019, 100048),
+  (100020, 100048),
+  (100021, 100048),
+  (100022, 100048),
+  (100023, 100048),
+  (100024, 100048),
+  (100025, 100048),
+  (100026, 100048),
+  (100027, 100048),
+  (100028, 100048),
+  (100029, 100048),
+  (100030, 100048),
+  (100031, 100048),
+  (100032, 100048),
+  (100033, 100048),
+  (100034, 100048),
+  (100035, 100048),
+  (100036, 100048),
+  (100037, 100048),
+  (100038, 100048),
+  (100039, 100048),
+  (100040, 100048),
+  (100041, 100048),
+  (100042, 100048),
+  (100043, 100048);
+

@@ -1,6 +1,7 @@
 package repository;
 
 import model.Recipe;
+import model.Snack;
 
 
 import java.util.List;
@@ -17,4 +18,13 @@ public interface RecipeRepository {
 
     List<Recipe> getAll();
 
+    List<Recipe> getLowCaloriesRecipes();
+
+    List<Recipe> getAverageCaloriesRecipes();
+
+    List<Recipe> getHighCaloriesRecipes();
+
+    List<Recipe> getSuperHighCaloriesRecipes();
+
+    List<Snack> getAllSnacks();
 }

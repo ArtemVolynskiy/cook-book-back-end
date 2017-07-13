@@ -45,7 +45,7 @@ public class UserRestController {
     }
 
     @GetMapping (value = "/buildration", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Recipe>> findRecipe(@RequestParam int calories) {
+    public ResponseEntity<List<List>> findRecipe(@RequestParam int calories) {
         return new ResponseEntity<>(recipeService.buildRation(calories), HttpStatus.OK);
     }
 

@@ -3,10 +3,12 @@ package service;
 
 import javassist.NotFoundException;
 import model.Recipe;
+import model.Snack;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import rationbuilder.RationBuilderStrategy;
 import repository.RecipeRepository;
-import util.rationbuilder.RationBuildingAlgorithm;
 
 import java.util.List;
 
@@ -16,10 +18,13 @@ public class RecipeServiceImpl implements RecipeService {
     private final
     RecipeRepository recipeRepository;
 
+    private final
+    BeanFactory beanFactory;
 
     @Autowired
-    public RecipeServiceImpl(RecipeRepository recipeRepository) {
+    public RecipeServiceImpl(RecipeRepository recipeRepository, BeanFactory beanFactory) {
         this.recipeRepository = recipeRepository;
+        this.beanFactory = beanFactory;
     }
 
     @Override
@@ -54,8 +59,21 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public List<Recipe> buildRation(int userCalories) {
-        List<Recipe> allRecipes = this.recipeRepository.getAll();
-        return RationBuildingAlgorithm.buildRation(userCalories, allRecipes);
+    public List<List> buildRation(int userCalories) {
+        List<Recipe> allRecipes;
+        List<Snack> snacks = recipeRepository.getAllSnacks();
+        if (userCalories <= 1200) {
+            allRecipes = recipeRepository.getLowCaloriesRecipes();
+            return beanFactory.getBean("averageWeight", RationBuilderStrategy.class).buildRation(userCalories, allRecipes, snacks);
+        } else if (userCalories <= 1800) {
+            allRecipes = recipeRepository.getAverageCaloriesRecipes();
+            return beanFactory.getBean("averageWeight", RationBuilderStrategy.class).buildRation(userCalories, allRecipes, snacks);
+        } else if (userCalories <= 2500) {
+            allRecipes = recipeRepository.getHighCaloriesRecipes();
+            return beanFactory.getBean("heavyWeight", RationBuilderStrategy.class).buildRation(userCalories, allRecipes, snacks);
+        } else {
+            allRecipes = recipeRepository.getSuperHighCaloriesRecipes();
+            return beanFactory.getBean("heavyWeight", RationBuilderStrategy.class).buildRation(userCalories, allRecipes, snacks);
+        }
     }
 }

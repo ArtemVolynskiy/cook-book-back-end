@@ -3,12 +3,17 @@ ALTER TABLE IF EXISTS public.user_recipe DROP CONSTRAINT IF EXISTS user_recipe_u
 ALTER TABLE IF EXISTS public.user_recipe DROP CONSTRAINT IF EXISTS user_recipe_recipe_id_fkey;
 ALTER TABLE IF EXISTS public.recipe_ingredients DROP CONSTRAINT IF EXISTS recipe_ingredients_ingredient_id_fkey;
 ALTER TABLE IF EXISTS public.recipe_ingredients DROP CONSTRAINT IF EXISTS recipe_ingredients_recipe_id_fkey;
+ALTER TABLE IF EXISTS public.recipe_drinks DROP CONSTRAINT IF EXISTS recipe_drinks_drink_id_fkey;
+ALTER TABLE IF EXISTS public.recipe_drinks DROP CONSTRAINT IF EXISTS recipe_drinks_recipe_id_fkey;
 DROP TABLE IF EXISTS public.user_roles;
 DROP TABLE IF EXISTS public.user_recipe;
 DROP TABLE IF EXISTS public.recipe_ingredients;
+DROP TABLE IF EXISTS public.recipe_drinks;
 DROP TABLE IF EXISTS public.users;
 DROP TABLE IF EXISTS public.recipe;
 DROP TABLE IF EXISTS public.ingredients;
+DROP TABLE IF EXISTS public.snacks;
+DROP TABLE IF EXISTS public.drinks;
 --
 DROP SEQUENCE IF EXISTS public.global_seq RESTRICT;
 
@@ -75,6 +80,29 @@ CREATE TABLE user_recipe
   recipe_id     INTEGER NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users(id),
   FOREIGN KEY (recipe_id) REFERENCES recipe(id)
+);
+
+
+CREATE TABLE snacks
+(
+  id          INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
+  name        VARCHAR NOT NULL,
+  calories    INTEGER NOT NULL
+);
+
+CREATE TABLE drinks
+(
+  id          INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
+  name        VARCHAR NOT NULL,
+  calories    INTEGER NOT NULL
+);
+
+CREATE TABLE recipe_drinks
+(
+  recipe_id       INTEGER NOT NULL,
+  drink_id           INTEGER NOT NULL,
+  FOREIGN KEY (recipe_id) REFERENCES recipe(id),
+  FOREIGN KEY  (drink_id) REFERENCES drinks (id)
 );
 
 -- CREATE UNIQUE INDEX users_unique_email_idx ON users (email);

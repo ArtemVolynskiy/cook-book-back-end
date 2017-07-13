@@ -12,11 +12,19 @@ import java.util.Set;
 @Table(name = "recipe", uniqueConstraints = {@UniqueConstraint(columnNames = {"id", "name", "recipe"})})
 @NamedQueries({
         @NamedQuery(name = Recipe.GET_ALL, query = "SELECT r FROM Recipe r ORDER BY r.name"),
+        @NamedQuery(name = Recipe.GET_LOW_CALORIE_RECIPES, query = "SELECT r FROM Recipe r WHERE r.calories < 400"),
+        @NamedQuery(name = Recipe.GET_AVERAGE_CALORIE_RECIPES, query = "SELECT r FROM Recipe r WHERE r.calories < 600"),
+        @NamedQuery(name = Recipe.GET_HIGH_CALORIE_RECIPES, query = "SELECT r FROM Recipe r WHERE r.calories > 400 AND r.calories < 900"),
+        @NamedQuery(name = Recipe.GET_SUPER_HIGH_CALORIE_RECIPES, query = "SELECT r FROM Recipe r WHERE r.calories > 600 OR r.type = 'snack'"),
         @NamedQuery(name = Recipe.FIND_BY_NAME, query = "SELECT DISTINCT r FROM Recipe r LEFT JOIN FETCH r.ingredients WHERE r.name=:name")
 })
 @Access(AccessType.FIELD)
-public class Recipe extends NamedEntity {
+public class Recipe extends BasicMealEntity {
     public static final String GET_ALL = "Recipe.getAll";
+    public static final String GET_LOW_CALORIE_RECIPES = "Recipe.getLowCalories";
+    public static final String GET_AVERAGE_CALORIE_RECIPES = "Recipe.getAverageCalories";
+    public static final String GET_HIGH_CALORIE_RECIPES = "Recipe.getHighCalories";
+    public static final String GET_SUPER_HIGH_CALORIE_RECIPES = "Recipe.getSuperHighCalories";
     public static final String FIND_BY_NAME = "Recipe.find";
 
     @Column (name = "type")
@@ -26,9 +34,7 @@ public class Recipe extends NamedEntity {
     @Column (name = "servings")
     @NotNull
     private int servings;
-    @Column (name = "calories")
-    @NotNull
-    private int calories;
+    
 
     @Column (name = "cookingtime")
     @NotNull
@@ -46,32 +52,33 @@ public class Recipe extends NamedEntity {
     @JsonManagedReference
     private Set<RecipeIngredients> ingredients;
 
+    @ManyToMany (fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @JoinTable(
+            name = "recipe_drinks",
+            joinColumns = @JoinColumn(name = "recipe_id"),
+            inverseJoinColumns = @JoinColumn(name = "drink_id")
+    )
+    private Set<Drink> drinks;
+
     @Column (name = "recipe")
     @NotEmpty
     private String recipe;
 
     public Recipe () {}
 
-    public Recipe (int id, String name, String type, int calories, int cookingTimeMinutes, int prepTime, byte [] image, Set<RecipeIngredients> ingredients,
+    public Recipe (int id, String name, String type, int calories, int cookingTimeMinutes, int prepTime, byte [] image,
+                   Set<RecipeIngredients> ingredients, Set<Drink> drinks,
                    String recipe) {
-        super(id, name);
+        super(id, name, calories);
         this.type = type;
-        this.calories = calories;
         this.cookingTimeMinutes = cookingTimeMinutes;
         this.image = image;
         this.ingredients = ingredients;
+        this.drinks = drinks;
         this.recipe = recipe;
         this.prepTime = prepTime;
     }
 
-
-    public int getCalories() {
-        return calories;
-    }
-
-    public void setCalories(int calories) {
-        this.calories = calories;
-    }
 
     private int getCookingTimeMinutes() {
         return cookingTimeMinutes;
@@ -137,5 +144,13 @@ public class Recipe extends NamedEntity {
 
     public void setServings(int servings) {
         this.servings = servings;
+    }
+
+    public Set<Drink> getDrinks() {
+        return drinks;
+    }
+
+    public void setDrinks(Set<Drink> drinks) {
+        this.drinks = drinks;
     }
 }

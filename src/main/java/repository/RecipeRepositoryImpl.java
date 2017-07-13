@@ -2,6 +2,7 @@ package repository;
 
 
 import model.Recipe;
+import model.Snack;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,5 +48,30 @@ public class RecipeRepositoryImpl implements RecipeRepository {
     @Override
     public List<Recipe> getAll() {
         return em.createNamedQuery(Recipe.GET_ALL, Recipe.class).getResultList();
+    }
+
+    @Override
+    public List<Recipe> getLowCaloriesRecipes() {
+        return em.createNamedQuery(Recipe.GET_LOW_CALORIE_RECIPES, Recipe.class).getResultList();
+    }
+
+    @Override
+    public List<Recipe> getAverageCaloriesRecipes() {
+        return em.createNamedQuery(Recipe.GET_AVERAGE_CALORIE_RECIPES, Recipe.class).getResultList();
+    }
+
+    @Override
+    public List<Recipe> getHighCaloriesRecipes() {
+        return em.createNamedQuery(Recipe.GET_HIGH_CALORIE_RECIPES, Recipe.class).getResultList();
+    }
+
+    @Override
+    public List<Recipe> getSuperHighCaloriesRecipes() {
+        return em.createNamedQuery(Recipe.GET_SUPER_HIGH_CALORIE_RECIPES, Recipe.class).getResultList();
+    }
+
+    @Override
+    public List<Snack> getAllSnacks() {
+        return em.createNamedQuery(Snack.GET_ALL, Snack.class).getResultList();
     }
 }

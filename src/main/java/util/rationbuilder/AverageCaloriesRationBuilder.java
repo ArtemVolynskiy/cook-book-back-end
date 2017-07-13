@@ -1,31 +1,20 @@
 package util.rationbuilder;
 
-
 import model.Recipe;
-
-
 import java.util.*;
-import java.util.stream.Collectors;
 
-public class RationBuildingAlgorithm {
+import static util.checker.RationBuilderUtils.checkValueIsInTheGap;
+import static util.checker.RationBuilderUtils.inTheGap;
 
-
-    public static List<Recipe> buildRation(int userCalories, List<Recipe> recipes) {
-
-        Map<String, Set<Recipe>> result =
-                recipes.stream()
-                        .collect(Collectors.groupingByConcurrent(Recipe::getType, Collectors.toSet())
-                        );
+public class AverageCaloriesRationBuilder {
 
 
-        Iterator breakfastIterator = result.get("breakfast").iterator();
-        Iterator lunchIterator = result.get("lunch").iterator();
-        Iterator dinnerIterator = result.get("dinner").iterator();
-
+    public static List<Recipe> buildRation(Iterator breakfastIterator, Iterator lunchIterator, Iterator dinnerIterator, int userCalories) {
 
         Recipe breakfast = (Recipe) breakfastIterator.next();
         Recipe lunch = (Recipe) lunchIterator.next();
         Recipe dinner = (Recipe) dinnerIterator.next();
+
 
         boolean done = false;
 
@@ -39,9 +28,9 @@ public class RationBuildingAlgorithm {
             }
 
             if (!finalList.isEmpty()) {
-                gapResult = checkIfInTheGap(finalList.get(0).getCalories() + finalList.get(1).getCalories() + finalList.get(2).getCalories(), userCalories);
+                gapResult = checkValueIsInTheGap(finalList.get(0).getCalories() + finalList.get(1).getCalories() + finalList.get(2).getCalories(), userCalories);
             } else {
-                gapResult = checkIfInTheGap(breakfast.getCalories() + lunch.getCalories() + dinner.getCalories(), userCalories);
+                gapResult = checkValueIsInTheGap(breakfast.getCalories() + lunch.getCalories() + dinner.getCalories(), userCalories);
             }
 
             if (gapResult == 0) {
@@ -63,20 +52,20 @@ public class RationBuildingAlgorithm {
                                                         Iterator dinnerIterator,  Recipe breakfast, Recipe lunch, Recipe dinner,  int userCalories){
         if (breakfastIterator.hasNext()) {
             breakfast = findRecipeWithMoreCalories(breakfastIterator, breakfast);
-            if (checkSum(breakfast, lunch, dinner, userCalories)) {
-               return  populateList(breakfast, lunch, dinner);
+            if (sumMeetsCondition(breakfast, lunch, dinner, userCalories)) {
+                return  populateList(breakfast, lunch, dinner);
             }
         }
         if (lunchIterator.hasNext()) {
             lunch = findRecipeWithMoreCalories(lunchIterator, lunch);
-            if (checkSum(breakfast, lunch, dinner, userCalories)) {
-               return  populateList(breakfast, lunch, dinner);
+            if (sumMeetsCondition(breakfast, lunch, dinner, userCalories)) {
+                return  populateList(breakfast, lunch, dinner);
             }
         }
         if (dinnerIterator.hasNext()) {
             dinner =  findRecipeWithMoreCalories(dinnerIterator, dinner);
-            if (checkSum(breakfast, lunch, dinner, userCalories)) {
-               return populateList(breakfast, lunch, dinner);
+            if (sumMeetsCondition(breakfast, lunch, dinner, userCalories)) {
+                return populateList(breakfast, lunch, dinner);
             }
         }
         return populateList(breakfast, lunch, dinner);
@@ -88,20 +77,20 @@ public class RationBuildingAlgorithm {
 
         if (breakfastIterator.hasNext()) {
             breakfast = findRecipeWithLessCalories(breakfastIterator, breakfast);
-            if (checkSum(breakfast, lunch, dinner, userCalories)) {
+            if (sumMeetsCondition(breakfast, lunch, dinner, userCalories)) {
                 return populateList(breakfast, lunch, dinner);
 
             }
         }
         if (lunchIterator.hasNext()) {
             lunch = findRecipeWithLessCalories(lunchIterator, lunch);
-            if (checkSum(breakfast, lunch, dinner, userCalories)) {
+            if (sumMeetsCondition(breakfast, lunch, dinner, userCalories)) {
                 return populateList(breakfast, lunch, dinner);
             }
         }
         if (dinnerIterator.hasNext()) {
             dinner = findRecipeWithLessCalories(dinnerIterator, dinner);
-            if (checkSum(breakfast, lunch, dinner, userCalories)) {
+            if (sumMeetsCondition(breakfast, lunch, dinner, userCalories)) {
                 return populateList(breakfast, lunch, dinner);
             }
         }
@@ -133,7 +122,7 @@ public class RationBuildingAlgorithm {
         return recipe;
     }
 
-    private static boolean checkSum(Recipe breakfast, Recipe lunch, Recipe dinner, int userCalories) {
+    private static boolean sumMeetsCondition(Recipe breakfast, Recipe lunch, Recipe dinner, int userCalories) {
         return inTheGap(breakfast.getCalories() + lunch.getCalories() + dinner.getCalories(), userCalories);
     }
 
@@ -146,24 +135,5 @@ public class RationBuildingAlgorithm {
         return finalList;
     }
 
-    private static int checkIfInTheGap(int caloriesSum, int userCalories) {
 
-        double loverGap = ((double)userCalories / 100) * 90;
-
-        if (inTheGap(caloriesSum, userCalories)) {
-            return 0;
-        }
-        else if (caloriesSum < loverGap) {
-            return -1;  // result array doesn't have enough calories
-        } else  {
-            return 1; // result array has too many calories
-        }
-    }
-
-    private static boolean inTheGap(int caloriesSum, int userCalories) {
-        double loverGap = ((double)userCalories / 100) * 90;
-        double upperGap = ((double)userCalories / 100) * 110;
-
-        return caloriesSum <= upperGap && caloriesSum >= loverGap;
-    }
 }
