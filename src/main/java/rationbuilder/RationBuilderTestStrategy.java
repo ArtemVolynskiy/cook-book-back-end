@@ -1,9 +1,7 @@
 package rationbuilder;
 
 
-import model.BasicMealEntity;
-import model.Recipe;
-import model.Snack;
+import model.*;
 
 import static util.checker.RationBuilderUtils.*;
 
@@ -15,29 +13,29 @@ class RationBuilderTestStrategy {
     private static int lunchCaloriesPercent = 45;
     private static int dinnerCaloriesPercent = 25;
 
-    static List<List> buildRation(Iterator breakfastIterator, Iterator lunchIterator, Iterator dinnerIterator,
+    static List<Recipe> buildRation(Iterator breakfastIterator, Iterator lunchIterator, Iterator dinnerIterator,
                                          List<Snack> snacks, int userCalories) {
+
         int breakfastCalories = (int) getPercentValue(breakfastCaloriesPercent, userCalories);
         int lunchCalories = (int) getPercentValue(lunchCaloriesPercent, userCalories);
         int dinnerCalories = (int) getPercentValue(dinnerCaloriesPercent, userCalories);
 
-        List<BasicMealEntity> breakfast = findPerfectRecipe(breakfastIterator, breakfastCalories, snacks);
-        List<BasicMealEntity> lunch = findPerfectRecipe(lunchIterator, lunchCalories, snacks);
-        List<BasicMealEntity> dinner = findPerfectRecipe(dinnerIterator, dinnerCalories, snacks);
+        Recipe breakfast = findPerfectRecipe(breakfastIterator, breakfastCalories, snacks);
+        Recipe lunch = findPerfectRecipe(lunchIterator, lunchCalories, snacks);
+        Recipe dinner = findPerfectRecipe(dinnerIterator, dinnerCalories, snacks);
 
 
 
         return populateList(breakfast, lunch, dinner);
     }
 
-    private static double getPercentValue(int percent, int value) {
-        double sum = (double)value / 100 * percent;
-        System.out.println(sum);
-        return sum;
+    private static double getPercentValue(int percent, int value) { // returns percentage of the value sent as an argument
+        return (double)value / 100 * percent;
     }
 
-    private static List<BasicMealEntity> findPerfectRecipe(Iterator recipeIterator, int desiredCalories, List<Snack> snacks) {
-        List<BasicMealEntity> recipes = new LinkedList<>();
+    private static RecipeTO findPerfectRecipe(Iterator recipeIterator, int desiredCalories, List<Snack> snacks) {
+
+
         int prevClosest = 10000;
         Recipe currentRecipe;
         Recipe closestRecipe = null;
@@ -45,8 +43,7 @@ class RationBuilderTestStrategy {
         while (recipeIterator.hasNext()) {
             currentRecipe = (Recipe) recipeIterator.next();
             if (inTheGap(currentRecipe.getCalories(), desiredCalories)) {
-                recipes.add(currentRecipe);
-                return recipes;
+                return  new RecipeTO(currentRecipe);
             } else {
                 int howClose = closestMuch(currentRecipe.getCalories(), desiredCalories);
                 if (howClose > 0) {
@@ -58,27 +55,20 @@ class RationBuilderTestStrategy {
             }
         }
 
-        if (!recipes.isEmpty()) {
-            return recipes;
-        }
 
         assert closestRecipe != null;
-        BasicMealEntity drink = addMeal(closestRecipe.getCalories(), desiredCalories, closestRecipe.getDrinks());
-
-        recipes.add(closestRecipe);
-        recipes.add(drink);
+        Drink drink = (Drink) addMeal(closestRecipe.getCalories(), desiredCalories, closestRecipe.getDrinks());
 
         if (inTheGap(closestRecipe.getCalories() + drink.getCalories(), desiredCalories)){
-            return recipes;
+            return  new RecipeTO(closestRecipe, drink);
         } else {
-            BasicMealEntity snack = addMeal(closestRecipe.getCalories()+ drink.getCalories(), desiredCalories, snacks);
-            recipes.add(snack);
-            return recipes;
+            Snack snack = (Snack) addMeal(closestRecipe.getCalories()+ drink.getCalories(), desiredCalories, snacks);
+            return new RecipeTO(closestRecipe, drink, snack);
         }
     }
 
     private static BasicMealEntity addMeal(int currentCalories, int targetCalories, Collection extras) {
-        int prevClosest = 10000;
+        int prevClosest = Integer.MAX_VALUE;
         Iterator mealIterator = extras.iterator();
 
         BasicMealEntity closestRecipe = null;
@@ -90,11 +80,9 @@ class RationBuilderTestStrategy {
                 return currentDrink;
             } else {
                 int howClose = closestMuch(currentDrink.getCalories() + currentCalories, targetCalories);
-                if (howClose > 0) {
-                    if (howClose < prevClosest) {
+                if (howClose > 0 && howClose < prevClosest) {
                         prevClosest = howClose;
                         closestRecipe = currentDrink;
-                    }
                 }
             }
         }
@@ -105,11 +93,11 @@ class RationBuilderTestStrategy {
         RationBuilderTestStrategy.breakfastCaloriesPercent = breakfastCaloriesPercent;
     }
 
-    public static void setLunchCaloriesPercent(int lunchCaloriesPercent) {
+    static void setLunchCaloriesPercent(int lunchCaloriesPercent) {
         RationBuilderTestStrategy.lunchCaloriesPercent = lunchCaloriesPercent;
     }
 
-    public static void setDinnerCaloriesPercent(int dinnerCaloriesPercent) {
+    static void setDinnerCaloriesPercent(int dinnerCaloriesPercent) {
         RationBuilderTestStrategy.dinnerCaloriesPercent = dinnerCaloriesPercent;
     }
 }

@@ -4,7 +4,6 @@ package rationbuilder;
 import model.Recipe;
 import model.Snack;
 import org.springframework.stereotype.Component;
-import util.rationbuilder.HighCaloriesRationBuilder;
 
 import java.util.Iterator;
 import java.util.List;
@@ -14,7 +13,7 @@ import java.util.Set;
 @Component("heavyWeight")
 public class RationBuilderStrategyHeavyWeight implements RationBuilderStrategy {
     @Override
-    public List<List> buildRation(int calories, List<Recipe> recipes, List<Snack> snacks) {
+    public List<Recipe> buildRation(int calories, List<Recipe> recipes, List<Snack> snacks) {
 
         Map<String, Set<Recipe>> sortedRecipes =
                 util.converter.CollectionConverter.divideRecipesByType(recipes);

@@ -56,9 +56,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public User findById(int id) {  // Returns instance and recipes
-        User user = userRepository.findById(id);
-        user.setPassword("");
-        return user;
+        return userRepository.findById(id);
     }
 
     @Override

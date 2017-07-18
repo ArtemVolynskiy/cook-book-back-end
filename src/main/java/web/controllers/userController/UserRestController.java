@@ -14,6 +14,7 @@ import service.UserService;
 
 import javax.persistence.NoResultException;
 import java.util.List;
+import java.util.Set;
 
 
 @RestController
@@ -38,14 +39,13 @@ public class UserRestController {
         return "Welcome to user panel!";
     }
 
-    @CrossOrigin()
     @PutMapping(value = "/register" ,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<User> createUser(@RequestBody User user) {
         return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
     }
 
     @GetMapping (value = "/buildration", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<List>> findRecipe(@RequestParam int calories) {
+    public ResponseEntity findRecipe(@RequestParam int calories) {
         return new ResponseEntity<>(recipeService.buildRation(calories), HttpStatus.OK);
     }
 
@@ -56,6 +56,12 @@ public class UserRestController {
         } catch ( NoResultException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping (value = "/recipes", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Set<Recipe>> getRecipes(){
+       Set<Recipe> userRecipes = userService.findById(AuthorizedUser.id()).getUserRecipes();
+        return new ResponseEntity<>(userRecipes, HttpStatus.OK);
     }
 
     @PutMapping(value = "/countRate", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -71,7 +77,7 @@ public class UserRestController {
     @PutMapping (value = "/saverecipe", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<User> saveRecipe(@RequestBody Recipe recipe ) {
         try {
-            return new ResponseEntity<>(userService.saveRecipe(AuthorizedUser.id(), recipe), HttpStatus.FOUND);
+            return new ResponseEntity<>(userService.saveRecipe(AuthorizedUser.id(), recipe), HttpStatus.OK);
         } catch (NullPointerException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

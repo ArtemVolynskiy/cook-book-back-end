@@ -34,7 +34,7 @@ public class RecipeRestController extends AbstractRecipeController {
 
     public @GetMapping (value = "/find", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<Set<RecipeIngredients>> findRecipe(@RequestParam ("name") String name) {
-      return super.findRecipe(name);
+      return super.findRecipe(name.toLowerCase());
     }
 
     public @PutMapping (value = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

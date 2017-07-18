@@ -16,7 +16,7 @@ import java.util.Set;
         @NamedQuery(name = Recipe.GET_AVERAGE_CALORIE_RECIPES, query = "SELECT r FROM Recipe r WHERE r.calories < 600"),
         @NamedQuery(name = Recipe.GET_HIGH_CALORIE_RECIPES, query = "SELECT r FROM Recipe r WHERE r.calories > 400 AND r.calories < 900"),
         @NamedQuery(name = Recipe.GET_SUPER_HIGH_CALORIE_RECIPES, query = "SELECT r FROM Recipe r WHERE r.calories > 600 OR r.type = 'snack'"),
-        @NamedQuery(name = Recipe.FIND_BY_NAME, query = "SELECT DISTINCT r FROM Recipe r LEFT JOIN FETCH r.ingredients WHERE r.name=:name")
+        @NamedQuery(name = Recipe.FIND_BY_NAME, query = "SELECT DISTINCT r FROM Recipe r LEFT JOIN FETCH r.ingredients WHERE LOWER(r.name)=:name")
 })
 @Access(AccessType.FIELD)
 public class Recipe extends BasicMealEntity {
@@ -45,14 +45,14 @@ public class Recipe extends BasicMealEntity {
     private int prepTime;
 
     @Column (name = "image")
-    private byte [] image;
+    private String image;
 
 
     @OneToMany (fetch = FetchType.LAZY, mappedBy = "recipe", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
     @JsonManagedReference
     private Set<RecipeIngredients> ingredients;
 
-    @ManyToMany (fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @ManyToMany (fetch = FetchType.EAGER)
     @JoinTable(
             name = "recipe_drinks",
             joinColumns = @JoinColumn(name = "recipe_id"),
@@ -66,7 +66,7 @@ public class Recipe extends BasicMealEntity {
 
     public Recipe () {}
 
-    public Recipe (int id, String name, String type, int calories, int cookingTimeMinutes, int prepTime, byte [] image,
+    public Recipe (int id, String name, String type, int calories, int cookingTimeMinutes, int prepTime, String image,
                    Set<RecipeIngredients> ingredients, Set<Drink> drinks,
                    String recipe) {
         super(id, name, calories);
@@ -80,7 +80,7 @@ public class Recipe extends BasicMealEntity {
     }
 
 
-    private int getCookingTimeMinutes() {
+    public int getCookingTimeMinutes() {
         return cookingTimeMinutes;
     }
 
@@ -97,11 +97,11 @@ public class Recipe extends BasicMealEntity {
         this.recipe = recipe;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

@@ -33,8 +33,8 @@ public class RationBuilderUtils {
         return userCalories - caloriesSum;
     }
 
-    public static List<List> populateList (List<BasicMealEntity> breakfast, List<BasicMealEntity> lunch, List<BasicMealEntity> dinner) {
-        List<List> finalList = new LinkedList<>();
+    public static List<Recipe> populateList (Recipe breakfast, Recipe lunch, Recipe dinner) {
+        List<Recipe> finalList = new LinkedList<>();
         finalList.add(breakfast);
         finalList.add(lunch);
         finalList.add(dinner);

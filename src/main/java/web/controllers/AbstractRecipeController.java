@@ -31,7 +31,10 @@ public class AbstractRecipeController {
 
     protected  ResponseEntity<Set<RecipeIngredients>> findRecipe(String name) {
         try {
-            Recipe recipe = recipeService.findByName(name.toLowerCase());
+            Recipe recipe = recipeService.findByName(name);
+            for (int i = 0; i < 100; i++) {
+                System.out.println(recipe.getName());
+            }
             return new ResponseEntity<>(recipe.getIngredients(), HttpStatus.OK);
         } catch (NoResultException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

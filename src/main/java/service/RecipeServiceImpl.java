@@ -59,7 +59,7 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public List<List> buildRation(int userCalories) {
+    public List<Recipe> buildRation(int userCalories) {
         List<Recipe> allRecipes;
         List<Snack> snacks = recipeRepository.getAllSnacks();
         if (userCalories <= 1200) {

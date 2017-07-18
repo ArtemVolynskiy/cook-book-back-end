@@ -12,7 +12,7 @@ import java.util.Set;
 @Component("averageWeight")
 public class RationBuilderStrategyAverageWeight implements RationBuilderStrategy {
     @Override
-    public List<List> buildRation(int calories, List<Recipe> recipes, List<Snack> snacks) {
+    public List<Recipe> buildRation(int calories, List<Recipe> recipes, List<Snack> snacks) {
         Map<String, Set<Recipe>> sortedRecipes =
                 util.converter.CollectionConverter.divideRecipesByType(recipes);
 

@@ -65,6 +65,7 @@ CREATE TABLE recipe
   preptime    INTEGER NOT NULL
 );
 
+
 CREATE TABLE recipe_ingredients
 (
   ingredient_id       INTEGER NOT NULL,
@@ -101,8 +102,9 @@ CREATE TABLE recipe_drinks
 (
   recipe_id       INTEGER NOT NULL,
   drink_id           INTEGER NOT NULL,
-  FOREIGN KEY (recipe_id) REFERENCES recipe(id),
-  FOREIGN KEY  (drink_id) REFERENCES drinks (id)
+  FOREIGN KEY (recipe_id) REFERENCES recipe(id) ON DELETE NO ACTION ,
+  FOREIGN KEY  (drink_id) REFERENCES drinks (id) ON DELETE NO ACTION
+
 );
 
 -- CREATE UNIQUE INDEX users_unique_email_idx ON users (email);

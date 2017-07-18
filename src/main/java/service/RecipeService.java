@@ -20,5 +20,5 @@ public interface RecipeService {
 
     void update (Recipe recipe);
 
-    List<List> buildRation(int userCalories);
+    List<Recipe> buildRation(int userCalories);
 }
