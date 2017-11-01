@@ -24,10 +24,10 @@ public class AbstractIngredientController {
     }
 
     /**
-     * <p>Method is responsible for retrieving ingredients from ingredientService provided my Spring
+     * <p>Method is responsible for retrieving ingredients from ingredientService provided by Spring
      * through autowired annotation</p>
      *
-     * <p>Search in based on the name of the ingredient. In case if requested ingredient does not exist HttpStatus 'Not Found' will be returned.</p>
+     * <p>Search is based on the name of the ingredient. In case if requested ingredient does not exist HttpStatus 'Not Found' will be returned.</p>
      * @param ingredientName the name of the ingredient about to be retrieved. Case insensitive.
      * @return single ingredient entity
      */
@@ -43,7 +43,7 @@ public class AbstractIngredientController {
     }
 
     /**
-     * <p>Method is responsible for creating new ingredient. In case if provided ingredient already exists in the database HttpStatus 'Conflict' will be returned.</p>
+     * <p>Method is responsible for creating new ingredient. In case if provided ingredient is already exists in the database HttpStatus 'Conflict' will be returned.</p>
      * @param ingredient the ingredient about to be created
      * @return single ingredient entity
      */
@@ -52,14 +52,14 @@ public class AbstractIngredientController {
 
         Ingredient currentIngredient = ingredientService.findByName(ingredient.getName().toLowerCase());
         if (currentIngredient != null) {
-            LOGGER.error("Unable to create, ingredient with id: {} already exists", ingredient.getId());
+            LOGGER.error("Unable to create, ingredient with name: {} already exists", ingredient.getName());
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
         return new ResponseEntity<>(ingredientService.save(ingredient), HttpStatus.CREATED);
     }
 
     /**
-     * <p>Method is responsible for updating existing ingredient. If provided ingredient in not registered in the database HttpStatus 'Not Found' will be returned</p>
+     * <p>Method is responsible for updating existing ingredient. If provided ingredient is not registered in the database HttpStatus 'Not Found' will be returned</p>
      * @param ingredient the ingredient about to be updated
      * @return ResponseEntity with relevant HttpStatus
      */
@@ -76,7 +76,7 @@ public class AbstractIngredientController {
     }
 
     /**
-     * <p>Method is responsible for deleting existing ingredient. If provided ingredient in not registered in the database HttpStatus 'Not Found' will be returned</p>
+     * <p>Method is responsible for deleting existing ingredient. If provided ingredient is not registered in the database HttpStatus 'Not Found' will be returned</p>
      * @param id the id of the ingredient about to be deleted
      * @return relevant HttpStatus
      */
@@ -98,7 +98,7 @@ public class AbstractIngredientController {
      * @return List of ingredients
      */
     protected ResponseEntity<List<Ingredient>> findAll () {
-        LOGGER.info("Retrieving all ingredient");
+        LOGGER.info("Retrieving all ingredients");
         return new ResponseEntity<>(ingredientService.getAll(), HttpStatus.OK);
     }
 

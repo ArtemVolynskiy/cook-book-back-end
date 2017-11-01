@@ -29,9 +29,9 @@ public class RecipeRestController extends AbstractRecipeController {
     }
 
     public @GetMapping (value = "/find")
-    ResponseEntity<Set<RecipeIngredients>> findRecipe(@RequestParam ("name") String name) {
-        LOG.debug("Parameter received: name = {}", name);
-        return super.findRecipe(name.toLowerCase());
+    ResponseEntity<Set<RecipeIngredients>> findRecipeIngredients(@RequestParam ("name") String recipeName) {
+        LOG.debug("Parameter received: recipeName = {}", recipeName);
+        return super.findRecipeIngredients(recipeName.toLowerCase());
     }
 
     public @PutMapping (value = "/create")
