@@ -4,6 +4,8 @@ package web.controllers.adminController;
 import com.fasterxml.jackson.databind.node.TextNode;
 import javassist.NotFoundException;
 import model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,9 +16,12 @@ import service.UserService;
 import java.util.List;
 
 @RestController
-@RequestMapping(AdminRestController.REST_URL)
+@RequestMapping(value = AdminRestController.REST_URL, produces = AdminRestController.JSON_UTF8)
 public class AdminRestController {
     static final String REST_URL = "/admin";
+    static final String JSON_UTF8 = MediaType.APPLICATION_JSON_UTF8_VALUE;
+
+    private static final Logger LOG = LoggerFactory.getLogger(AdminRestController.class);
 
     private final
     UserService userService;
@@ -32,8 +37,9 @@ public class AdminRestController {
     }
 
 
-    @GetMapping(value = "/findMail", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/findByEmail")
     public ResponseEntity<User> getByEmail(@RequestParam("email") String email) {
+        LOG.debug("Searching user by email: email = {}", email);
         try {
             User user = userService.getByEmail(email);
             return new ResponseEntity<>(user, HttpStatus.FOUND);
@@ -42,7 +48,7 @@ public class AdminRestController {
         }
     }
 
-    @GetMapping(value = "/findId", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/findId")
     public ResponseEntity<User> getById(@RequestParam("id") int id) {
         try {
             User user = userService.get(id);
@@ -52,23 +58,26 @@ public class AdminRestController {
         }
     }
 
-    @PostMapping(value = "/update}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = "/update}")
     public void updateUser(@RequestBody User user) {
+        LOG.debug("Update user, received parameter: user = {}", user);
         userService.update(user);
     }
 
     @DeleteMapping (value = "/delete")
-    public HttpStatus deleteIngredient (@RequestBody TextNode textNode) {
+    public HttpStatus deleteIngredient (@RequestBody TextNode id) {
+        LOG.debug("Delete ingredient, received parameter: id = {}", id);
         try {
-            userService.delete(Integer.parseInt(textNode.textValue()));
+            userService.delete(Integer.parseInt(id.textValue()));
             return HttpStatus.OK;
         } catch (NotFoundException| IllegalArgumentException e) {
             return HttpStatus.NOT_FOUND;
         }
     }
 
-    public @GetMapping(value= "/all", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public @GetMapping(value= "/all")
     List<User> getAllUsers() {
+        LOG.debug("Get all");
         return userService.getAll();
     }
 }

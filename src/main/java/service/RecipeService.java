@@ -10,9 +10,9 @@ public interface RecipeService {
 
     Recipe save (Recipe recipe);
 
-    void delete (int id) throws NotFoundException;
+    void delete (int id);
 
-    Recipe get (int id) throws NotFoundException;
+    Recipe get (int id);
 
     Recipe findByName (String name);
 

@@ -7,13 +7,13 @@ import javax.validation.constraints.NotNull;
 @Access(AccessType.PROPERTY)
 @Table (name = "ingredients")
 @NamedQueries({
-        @NamedQuery(name = Ingredient.DELETE, query = "DELETE FROM Ingredient i WHERE i.name=:name"),
+        @NamedQuery(name = Ingredient.DELETE, query = "DELETE FROM Ingredient i WHERE i.id=:id"),
         @NamedQuery(name = Ingredient.GET_ALL, query = "SELECT i FROM Ingredient i ORDER BY i.name"),
         @NamedQuery(name = Ingredient.FIND, query = "SELECT i FROM Ingredient i WHERE i.name=:name")
 }
 )
 public class Ingredient extends NamedEntity {
-    static final String DELETE = "Ingredient.delete";
+    public static final String DELETE = "Ingredient.delete";
     public static final String FIND = "Ingredient.find";
     public static final String GET_ALL = "Ingredient.all";
 

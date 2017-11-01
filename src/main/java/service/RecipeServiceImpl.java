@@ -1,7 +1,6 @@
 package service;
 
 
-import javassist.NotFoundException;
 import model.Recipe;
 import model.Snack;
 import org.springframework.beans.factory.BeanFactory;
@@ -29,12 +28,11 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public Recipe save(Recipe recipe) {
-//
         return recipeRepository.save(recipe);
     }
 
     @Override
-    public void delete(int id) throws NotFoundException {
+    public void delete(int id){
         recipeRepository.delete(id);
     }
 

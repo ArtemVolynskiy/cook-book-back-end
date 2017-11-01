@@ -21,6 +21,7 @@ public class IngredientRepositoryImpl implements IngredientRepository {
     @Transactional
     public Ingredient save(Ingredient ingredient) {
         if (ingredient.isNew()) {
+            ingredient.setName(ingredient.getName().toLowerCase());
             em.persist(ingredient);
             return ingredient;
         } else {
@@ -40,8 +41,11 @@ public class IngredientRepositoryImpl implements IngredientRepository {
 
     @Override
     @Transactional
-    public void delete(int id) {
-        em.remove(em.find(Ingredient.class, id));
+    public boolean delete(int id) {
+//        em.remove(em.find(Ingredient.class, id));
+        return em.createNamedQuery(Ingredient.DELETE).
+                setParameter("id", id)
+                .executeUpdate() != 0;
     }
 
     @Override
