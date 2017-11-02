@@ -71,8 +71,7 @@ public class AbstractIngredientController {
             LOGGER.error("Failed to update, ingredient with id: {} doesn't exist");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        ingredientService.update(ingredient);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(ingredientService.update(ingredient), HttpStatus.OK);
     }
 
     /**

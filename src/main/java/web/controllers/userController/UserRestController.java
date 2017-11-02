@@ -11,9 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import service.RecipeService;
 import service.UserService;
+import web.AuthorizedUser;
 
 import javax.persistence.NoResultException;
-import java.util.List;
 import java.util.Set;
 
 
@@ -66,12 +66,9 @@ public class UserRestController {
 
     @PutMapping(value = "/countRate", consumes = MediaType.APPLICATION_JSON_VALUE)
     public HttpStatus countRate(@RequestBody UserInfo userInfo) {
-        try {
+
             userService.countCalories(userInfo);
             return HttpStatus.OK;
-        } catch (NotFoundException e) {
-            return HttpStatus.NON_AUTHORITATIVE_INFORMATION;
-        }
     }
 
     @PutMapping (value = "/saverecipe", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

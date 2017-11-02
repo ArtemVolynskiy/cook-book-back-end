@@ -48,8 +48,8 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    public void update(Ingredient ingredient) {
+    public Ingredient update(Ingredient ingredient) {
         Assert.notNull(ingredient, "User must not be null");
-        ingredientRepository.save(ingredient);
+        return ingredientRepository.save(ingredient);
     }
 }

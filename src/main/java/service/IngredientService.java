@@ -18,5 +18,5 @@ public interface IngredientService {
 
     List<Ingredient> getAll();
 
-    void update (Ingredient ingredient);
+    Ingredient update (Ingredient ingredient);
 }

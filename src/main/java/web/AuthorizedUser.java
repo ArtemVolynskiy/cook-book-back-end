@@ -1,4 +1,4 @@
-package web.controllers.userController;
+package web;
 
 
 import model.User;

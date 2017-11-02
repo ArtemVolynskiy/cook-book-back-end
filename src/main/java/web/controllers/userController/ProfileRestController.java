@@ -1,13 +1,14 @@
 package web.controllers.userController;
 
-import javassist.NotFoundException;
 import model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import service.UserService;
+import web.AuthorizedUser;
 
 
 @RestController
@@ -15,6 +16,7 @@ import service.UserService;
 @RequestMapping(ProfileRestController.REST_URL)
 public class ProfileRestController {
     static final String REST_URL = "/profile";
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProfileRestController.class);
 
     private final UserService userService;
 
@@ -23,22 +25,25 @@ public class ProfileRestController {
         this.userService = userService;
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    /**
+     * This method is designed to return information to user about his current profile. It's only available if user is logged in.
+     * @return profile of authorized user
+     */
+    @GetMapping
     public ResponseEntity<User> get() {
-        try {
-            return new ResponseEntity<>(userService.get(AuthorizedUser.id()), HttpStatus.OK);
-        } catch (NotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        LOGGER.info("Getting user's profile");
+        return new ResponseEntity<>(userService.get(AuthorizedUser.id()), HttpStatus.OK);
     }
 
+    /**
+     * This method deletes user's profile from the database. It's only available if user is logged in.
+     * @return HttpStatus
+     */
     @DeleteMapping (value = "/delete")
     HttpStatus delete() {
-        try {
-            this.userService.delete(AuthorizedUser.id());
-            return HttpStatus.OK;
-        } catch (NotFoundException e) {
-            return HttpStatus.BAD_REQUEST;
-        }
+        LOGGER.info("Deleting user's profile");
+        this.userService.delete(AuthorizedUser.id());
+        return HttpStatus.OK;
+
     }
 }

@@ -1,7 +1,6 @@
 package service;
 
 
-import javassist.NotFoundException;
 import model.UserInfo;
 import model.Recipe;
 import model.User;
@@ -10,9 +9,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import repository.UserRepository;
-import org.springframework.util.Assert;
+import util.exception.ExceptionUtil;
 import util.ratecounter.CaloriesUtil;
-import web.controllers.userController.AuthorizedUser;
+import web.AuthorizedUser;
 
 import java.util.List;
 
@@ -39,18 +38,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void countCalories(UserInfo userInfo) throws NotFoundException {
+    public void countCalories(UserInfo userInfo) {
         User user = get(AuthorizedUser.id());
         user.setCalories(CaloriesUtil.countDailyCalories(userInfo));
         userRepository.save(user);
     }
 
 
-    public void delete(int id) throws NotFoundException {
-        userRepository.delete(id);
+    public void delete(int id) {
+        ExceptionUtil.checkNotFoundWithId(userRepository.delete(id), id);
     }
 
-    public User get(int id) throws NotFoundException  { // Returns instance without recipes
+    public User get(int id)  { // Returns instance without recipes
         return userRepository.get(id);
     }
 
@@ -65,7 +64,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
 
-    public User getByEmail(String email) throws NotFoundException {
+    public User getByEmail(String email) {
         return userRepository.getByEmail(email);
     }
 
@@ -74,18 +73,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void update(User user) {
-        Assert.notNull(user, "User must not be null");
-        userRepository.save(user);
+    public User update(User user) {
+        return userRepository.save(user);
     }
 
 
     @Override
     public AuthorizedUser loadUserByUsername(String email) throws UsernameNotFoundException {
-        User u = userRepository.getByEmail(email.toLowerCase());
-        if (u == null) {
-            throw new UsernameNotFoundException("User" + email + " not found");
-        }
+        User u = userRepository.getByEmail(email);
         return new AuthorizedUser(u);
     }
 }

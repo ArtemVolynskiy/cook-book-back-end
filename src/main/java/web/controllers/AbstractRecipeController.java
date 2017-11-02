@@ -66,13 +66,12 @@ public class AbstractRecipeController {
         LOGGER.info("Updating recipe with name: {}", recipe.getName());
 
         Recipe currentRecipe = recipeService.get(recipe.getId());
-
         if (currentRecipe == null) {
             LOGGER.error("Unable to update, recipe with name: {} does not exist", recipe.getName());
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        recipeService.update(recipe);
-        return new ResponseEntity<>(HttpStatus.OK);
+      ;
+        return new ResponseEntity<>(recipeService.update(recipe),HttpStatus.OK);
     }
 
     /**
