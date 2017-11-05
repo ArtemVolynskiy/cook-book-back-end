@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import service.IngredientService;
+import util.error.CustomError;
 
 import java.util.List;
 
@@ -31,13 +32,13 @@ public class AbstractIngredientController {
      * @param ingredientName the name of the ingredient about to be retrieved. Case insensitive.
      * @return single ingredient entity
      */
-    protected ResponseEntity<Ingredient> findIngredient (String ingredientName) {
+    protected ResponseEntity<?> findIngredientByName(String ingredientName) {
         LOGGER.info("Fetching ingredient with name: {}", ingredientName);
 
         Ingredient ingredient = ingredientService.findByName(ingredientName.toLowerCase());
         if (ingredient == null) {
             LOGGER.error("Ingredient not found: {}", ingredientName);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new CustomError("Unable to update, ingredient with name: " + ingredientName + " does not exist"), HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(ingredient, HttpStatus.OK);
     }
@@ -47,13 +48,13 @@ public class AbstractIngredientController {
      * @param ingredient the ingredient about to be created
      * @return single ingredient entity
      */
-    protected ResponseEntity<Ingredient> createIngredient (Ingredient ingredient ) {
+    protected ResponseEntity<?> createIngredient (Ingredient ingredient ) {
         LOGGER.info("Creating ingredient: {}", ingredient);
 
         Ingredient currentIngredient = ingredientService.findByName(ingredient.getName().toLowerCase());
         if (currentIngredient != null) {
             LOGGER.error("Unable to create, ingredient with name: {} already exists", ingredient.getName());
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
+            return new ResponseEntity<>(new CustomError("Unable to create, ingredient with name: " + currentIngredient.getName() + " already exists"), HttpStatus.CONFLICT);
         }
         return new ResponseEntity<>(ingredientService.save(ingredient), HttpStatus.CREATED);
     }
@@ -63,13 +64,13 @@ public class AbstractIngredientController {
      * @param ingredient the ingredient about to be updated
      * @return ResponseEntity with relevant HttpStatus
      */
-    protected ResponseEntity<Ingredient> updateIngredient(Ingredient ingredient) {
+    protected ResponseEntity<?> updateIngredient(Ingredient ingredient) {
         LOGGER.info("Updating ingredient with id: {}", ingredient.getId());
 
         Ingredient currentIngredient = ingredientService.get(ingredient.getId());
         if (currentIngredient == null) {
             LOGGER.error("Failed to update, ingredient with id: {} doesn't exist");
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new CustomError("Unable to update, ingredient with name: " + ingredient.getName() + " does not exist"), HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(ingredientService.update(ingredient), HttpStatus.OK);
     }
@@ -79,16 +80,14 @@ public class AbstractIngredientController {
      * @param id the id of the ingredient about to be deleted
      * @return relevant HttpStatus
      */
-    protected ResponseEntity<Ingredient> deleteIngredient (int id) {
+    protected ResponseEntity<?> deleteIngredient (int id) {
         LOGGER.info("Deleting ingredient with id: {}", id);
 
-        Ingredient ingredient = ingredientService.get(id);
-        if (ingredient == null) {
+        if(!ingredientService.delete(id)){
             LOGGER.error("Delete failed, ingredient with id: {} not found", id);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new CustomError("Unable to delete, recipe with id: " + id + " does not exist"), HttpStatus.NOT_FOUND);
         }
-        ingredientService.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>("User with id: " + id + " was successfully deleted",HttpStatus.OK);
     }
 
 
@@ -96,9 +95,13 @@ public class AbstractIngredientController {
      * <p>Method is responsible for retrieving all the ingredients registered in the database.</p>
      * @return List of ingredients
      */
-    protected ResponseEntity<List<Ingredient>> findAll () {
+    protected ResponseEntity<?> findAll () {
         LOGGER.info("Retrieving all ingredients");
+        List<Ingredient> ingredients = ingredientService.getAll();
+        if (ingredients == null || ingredients.size() == 0) {
+            LOGGER.error("Couldn't fetch ingredient list, returned list is either empty or not initialized");
+            return new ResponseEntity<>(new CustomError("Couldn't fetch ingredient list, returned list is either empty or not initialized"), HttpStatus.NO_CONTENT);
+        }
         return new ResponseEntity<>(ingredientService.getAll(), HttpStatus.OK);
     }
-
 }

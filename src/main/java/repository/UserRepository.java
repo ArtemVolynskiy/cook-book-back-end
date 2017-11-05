@@ -14,7 +14,6 @@ public interface UserRepository {
 
     User findByName (String name);
 
-
     User findById (int id);
 
     // False if not found

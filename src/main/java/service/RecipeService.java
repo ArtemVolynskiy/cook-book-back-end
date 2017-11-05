@@ -10,7 +10,7 @@ public interface RecipeService {
 
     Recipe save (Recipe recipe);
 
-    void delete (int id);
+    boolean delete (int id);
 
     Recipe get (int id);
 

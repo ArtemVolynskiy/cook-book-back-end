@@ -25,7 +25,7 @@ public class UserRepositoryImpl implements UserRepository {
     public User save(User user) {
         if (user.isNew()){
             user.setPassword(PasswordUtil.encode(user.getPassword()));
-            user.setRoles(new HashSet<Role>());
+            user.setRoles(new HashSet<>());
             user.getRoles().add(Role.ROLE_USER);
             user.getRoles().add(Role.ROLE_ADMIN);
             em.persist(user);
@@ -62,7 +62,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     public User getByEmail(String email) {
-        List<User> users = em.createNamedQuery(User.BY_EMAIL, User.class).setParameter(1, email).getResultList();
+        List<User> users = em.createNamedQuery(User.BY_EMAIL, User.class).setParameter("email", email).getResultList();
         return DataAccessUtils.singleResult(users);
     }
 }

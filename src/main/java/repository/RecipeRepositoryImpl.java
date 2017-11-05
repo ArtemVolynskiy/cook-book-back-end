@@ -41,8 +41,10 @@ public class RecipeRepositoryImpl implements RecipeRepository {
 
     @Override
     @Transactional
-    public void delete(int id) {
-        em.remove(em.find(Recipe.class, id));
+    public boolean delete(int id) {
+       return em.createNamedQuery(Recipe.DELETE)
+                .setParameter("id", id)
+                .executeUpdate() != 0;
     }
 
     @Override

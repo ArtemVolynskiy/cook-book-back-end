@@ -19,7 +19,7 @@ import java.util.Set;
 
 @NamedQueries({
         @NamedQuery(name = User.DELETE, query = "DELETE FROM User u WHERE u.id=:id"),
-        @NamedQuery(name = User.BY_EMAIL, query = "SELECT DISTINCT u from User u LEFT JOIN FETCH u.userRecipes WHERE u.email=?1"),
+        @NamedQuery(name = User.BY_EMAIL, query = "SELECT DISTINCT u from User u WHERE u.email=:email"),
         @NamedQuery(name = User.ALL_SORTED, query = "SELECT u from User u ORDER BY u.id, u.email"),
         @NamedQuery(name = User.FIND_BY_NAME, query = "SELECT DISTINCT u FROM  User u LEFT JOIN FETCH u.userRecipes WHERE u.name=:name"),
         @NamedQuery(name = User.FIND_BY_ID, query = "SELECT DISTINCT u FROM User u LEFT JOIN FETCH u.userRecipes WHERE u.id=:id")

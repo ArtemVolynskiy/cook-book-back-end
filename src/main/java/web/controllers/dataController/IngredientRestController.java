@@ -28,28 +28,28 @@ public class IngredientRestController extends AbstractIngredientController {
 
 
     public @GetMapping (value = "/find")
-    ResponseEntity<Ingredient> findIngredient (@RequestParam ("name") String name) {
-       return super.findIngredient(name);
+    ResponseEntity<?> findIngredientByName(@RequestParam ("name") String name) {
+       return super.findIngredientByName(name);
     }
 
     public @PutMapping (value = "/create")
-    ResponseEntity<Ingredient> createIngredient (@RequestBody Ingredient ingredient ) {
+    ResponseEntity<?> createIngredient (@RequestBody Ingredient ingredient ) {
         return super.createIngredient(ingredient);
     }
 
     public @PostMapping (value = "/update")
-    ResponseEntity<Ingredient> updateIngredient(@RequestBody Ingredient ingredient) {
+    ResponseEntity<?> updateIngredient(@RequestBody Ingredient ingredient) {
         return super.updateIngredient(ingredient);
     }
 
     public @DeleteMapping (value = "/delete")
-    ResponseEntity<Ingredient> deleteIngredient (@RequestParam int id) {
+    ResponseEntity<?> deleteIngredient (@RequestParam ("id") int id) {
       return super.deleteIngredient(id);
     }
 
 
     public @GetMapping (value = "/all")
-    ResponseEntity<List<Ingredient>> findAll () {
+    ResponseEntity<?> findAll () {
         return super.findAll();
     }
 

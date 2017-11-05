@@ -8,11 +8,13 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
+
 @Entity
 @Table(name = "recipe", uniqueConstraints = {@UniqueConstraint(columnNames = {"id", "name", "recipe"})})
 @NamedQueries({
         @NamedQuery(name = Recipe.GET_ALL, query = "SELECT r FROM Recipe r ORDER BY r.name"),
         @NamedQuery(name = Recipe.GET_LOW_CALORIE_RECIPES, query = "SELECT r FROM Recipe r WHERE r.calories < 400"),
+        @NamedQuery(name = Recipe.DELETE, query = "DELETE FROM Recipe r WHERE r.id=:id"),
         @NamedQuery(name = Recipe.GET_AVERAGE_CALORIE_RECIPES, query = "SELECT r FROM Recipe r WHERE r.calories < 600"),
         @NamedQuery(name = Recipe.GET_HIGH_CALORIE_RECIPES, query = "SELECT r FROM Recipe r WHERE r.calories > 400 AND r.calories < 900"),
         @NamedQuery(name = Recipe.GET_SUPER_HIGH_CALORIE_RECIPES, query = "SELECT r FROM Recipe r WHERE r.calories > 600 OR r.type = 'snack'"),
@@ -22,6 +24,7 @@ import java.util.Set;
 public class Recipe extends BasicMealEntity {
     public static final String GET_ALL = "Recipe.getAll";
     public static final String GET_LOW_CALORIE_RECIPES = "Recipe.getLowCalories";
+    public static final String DELETE = "Recipe.delete";
     public static final String GET_AVERAGE_CALORIE_RECIPES = "Recipe.getAverageCalories";
     public static final String GET_HIGH_CALORIE_RECIPES = "Recipe.getHighCalories";
     public static final String GET_SUPER_HIGH_CALORIE_RECIPES = "Recipe.getSuperHighCalories";

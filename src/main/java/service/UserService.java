@@ -26,5 +26,5 @@ public interface UserService {
 
     User saveRecipe(int id, Recipe recipe);
 
-    void countCalories(UserInfo userInfo);
+    User countCalories(UserInfo userInfo);
 }

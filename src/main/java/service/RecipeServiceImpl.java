@@ -32,8 +32,8 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public void delete(int id){
-        recipeRepository.delete(id);
+    public boolean delete(int id){
+        return recipeRepository.delete(id);
     }
 
     @Override

@@ -14,7 +14,7 @@ public interface RecipeRepository {
 
     Recipe findByName (String name);
 
-    void delete (int id);
+    boolean delete (int id);
 
     List<Recipe> getAll();
 

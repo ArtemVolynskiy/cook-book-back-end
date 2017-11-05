@@ -1,6 +1,5 @@
 package service;
 
-import javassist.NotFoundException;
 import model.Ingredient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,6 +7,7 @@ import org.springframework.util.Assert;
 import repository.IngredientRepository;
 import util.exception.ExceptionUtil;
 
+import javax.persistence.NoResultException;
 import java.util.List;
 
 @Service
@@ -28,8 +28,8 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    public void delete(int id){
-        ExceptionUtil.checkNotFoundWithId(ingredientRepository.delete(id), id);
+    public boolean delete(int id){
+        return ingredientRepository.delete(id);
     }
 
     @Override
@@ -39,7 +39,11 @@ public class IngredientServiceImpl implements IngredientService {
 
     @Override
     public Ingredient findByName(String name) {
-        return ExceptionUtil.checkNotFoundWithId(ingredientRepository.findByName(name), name);
+        try {
+            return ingredientRepository.findByName(name);
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Override

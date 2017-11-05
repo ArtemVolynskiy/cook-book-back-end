@@ -38,10 +38,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void countCalories(UserInfo userInfo) {
+    public User countCalories(UserInfo userInfo) {
         User user = get(AuthorizedUser.id());
         user.setCalories(CaloriesUtil.countDailyCalories(userInfo));
-        userRepository.save(user);
+       return userRepository.save(user);
     }
 
 
